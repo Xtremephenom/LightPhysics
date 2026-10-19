@@ -1,0 +1,43 @@
+# Dependencies and generated output
+node_modules/
+.pnpm-store/
+dist/
+coverage/
+.cache/
+.tmp/
+test-results/
+
+# Local configuration and credentials (keep the neutral example tracked)
+.env
+.env.*
+!.env.example
+*.local
+
+# Tool/model caches and runtime state
+.lightphysics/
+data/
+models/
+logs/
+*.sqlite
+*.sqlite3
+*.db
+fixtures/mini-game/.godot/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Generated evidence may contain machine-specific data; track reviewed Phase 0
+# evidence and explicitly allowlisted redacted checkpoints, not later raw captures.
+docs/evidence/*
+!docs/evidence/phase0/
+!docs/evidence/phase0/**
+!docs/evidence/phase1/
+docs/evidence/phase1/*
+!docs/evidence/phase1/verify-rebuild.md
+docs/acceptance/results/
+*.log

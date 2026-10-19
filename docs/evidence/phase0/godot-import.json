@@ -1,0 +1,58 @@
+{
+  "criterion": "P0-E7",
+  "status": "PASS",
+  "date": "2026-10-19",
+  "commit": "26fdb01",
+  "mode": "import",
+  "scope": "headless project import only",
+  "godot_import": {
+    "status": "PASS",
+    "command": "node scripts/godot-smoke.mjs --godot <temporary-path> --import --timeout-ms 30000",
+    "timeout_ms": 30000,
+    "results": [
+      {
+        "profile": "Windows x64",
+        "machine_profile": "windows-node-24.18.0",
+        "platform": "win32-x64",
+        "runtime": "v24.18.0",
+        "artifact": {
+          "tool": "godot",
+          "version": "4.7.2",
+          "component": "editor",
+          "lock_entry": "tools.lock.json#tools.godot.editor.win-x64",
+          "sha256": "731980f9608d61333e5baf54a2ef17210acc7a538446c0cb9969f002aca1e953",
+          "temporary_path": "<temporary-path>"
+        },
+        "exit_code": 0,
+        "classification": "import-success",
+        "message": "headless import exited 0"
+      },
+      {
+        "profile": "Linux x64 Docker",
+        "machine_profile": "docker-linux-x64-node-24.18.0",
+        "platform": "linux-x64",
+        "container": {
+          "base_image": "node:24.18.0-bookworm-slim",
+          "digest": "sha256:d45d78e7929b46875bbd4e29bea672d5bc48186c6c3588306521c815e78352d6"
+        },
+        "runtime": "v24.18.0",
+        "artifact": {
+          "tool": "godot",
+          "version": "4.7.2",
+          "component": "editor",
+          "lock_entry": "tools.lock.json#tools.godot.editor.linux-x64",
+          "sha256": "cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4",
+          "temporary_path": "<temporary-path>"
+        },
+        "exit_code": 0,
+        "classification": "import-success",
+        "message": "headless import exited 0"
+      }
+    ]
+  },
+  "qualification": "QUALIFIED_FOR_PINNED_WINDOWS_X64_AND_LINUX_X64_DOCKER_HEADLESS_PROJECT_IMPORT_ONLY",
+  "notes": [
+    "Executable and installation paths are redacted as <temporary-path>.",
+    "This receipt records the import process exit and classification only; it does not qualify boot-marker or --check-only behavior, rendering, gameplay, performance, packaging, export templates, native Linux, or other Godot profiles."
+  ]
+}

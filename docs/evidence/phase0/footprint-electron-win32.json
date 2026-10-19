@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "platform": {
+    "os": "win32",
+    "arch": "x64",
+    "release": "10.0.26200"
+  },
+  "host_profile": {
+    "os": "win32",
+    "arch": "x64",
+    "release": "10.0.26200",
+    "display": "available for this opt-in run"
+  },
+  "runtime": {
+    "name": "node",
+    "version": "v24.18.0"
+  },
+  "electron": {
+    "version": "44.9.0",
+    "executable": "pinned project Electron executable"
+  },
+  "command": {
+    "executable": "pinned Electron executable",
+    "args": [
+      "apps/electron/src/main.mjs",
+      "--footprint-url",
+      "<validated-loopback-url>",
+      "--footprint-sample-count=5",
+      "--footprint-sample-interval-ms=100"
+    ],
+    "working_directory": "workspace-root",
+    "shell": false,
+    "daemon_environment": {
+      "LP_BIND": "127.0.0.1",
+      "LP_IN_CONTAINER": "0",
+      "LP_LOG_FORMAT": "json",
+      "LP_LOG_LEVEL": "error",
+      "LP_PORT": "<ephemeral-loopback-port>",
+      "LP_TOKEN": "[redacted]"
+    },
+    "electron_environment": {
+      "LP_TOKEN": "not passed"
+    }
+  },
+  "listen": {
+    "bind": "127.0.0.1",
+    "port": "ephemeral"
+  },
+  "qualification": {
+    "status": "NOT_QUALIFIED",
+    "architecture_budget_claimed": false,
+    "budget_reference": {
+      "gui_idle_ram": "<= 400 MB (reference only; not evaluated here)",
+      "gui_cold_start": "no Phase 0 qualification threshold evaluated here"
+    },
+    "notes": [
+      "Measured values are host-specific observations; this report does not claim the architecture budget is met.",
+      "Cold start is measured from the direct pinned Electron spawn request until the existing real Studio Floor passes renderer validation.",
+      "Idle memory uses bounded Electron app.getAppMetrics() samples after renderer readiness and while lpd receives no workload requests.",
+      "Main means Electron Browser process and renderer means Electron Tab process; private bytes are reported only when Electron exposes them.",
+      "Repeat on the reference hardware/profile before making a qualification decision.",
+      "Packaging, visual/accessibility, Linux secret-store behavior, and cross-platform memory remain unrun."
+    ]
+  },
+  "status": "MEASURED",
+  "measurement": {
+    "cold_start_ms": 369.748,
+    "cold_start_bound_ms": 30000,
+    "renderer": {
+      "state": "ready",
+      "validation": "real Studio Floor markers, same-origin loopback URL, and strict local CSP"
+    },
+    "idle_memory": {
+      "state": "idle",
+      "sample_count": 5,
+      "sample_interval_ms": 100,
+      "window_ms": 400,
+      "source": "electron.app.getAppMetrics",
+      "unit": "bytes",
+      "main": {
+        "process_count": {
+          "sample_count": 5,
+          "min": 1,
+          "max": 1,
+          "mean": 1
+        },
+        "working_set_bytes": {
+          "sample_count": 5,
+          "min_bytes": 99086336,
+          "max_bytes": 101715968,
+          "mean_bytes": 101012275
+        },
+        "private_bytes": {
+          "sample_count": 5,
+          "min_bytes": 38191104,
+          "max_bytes": 38780928,
+          "mean_bytes": 38505677
+        }
+      },
+      "renderer": {
+        "process_count": {
+          "sample_count": 5,
+          "min": 1,
+          "max": 1,
+          "mean": 1
+        },
+        "working_set_bytes": {
+          "sample_count": 5,
+          "min_bytes": 81641472,
+          "max_bytes": 86511616,
+          "mean_bytes": 85496627
+        },
+        "private_bytes": {
+          "sample_count": 5,
+          "min_bytes": 33738752,
+          "max_bytes": 34942976,
+          "mean_bytes": 34680013
+        }
+      },
+      "total": {
+        "process_count": {
+          "sample_count": 5,
+          "min": 2,
+          "max": 2,
+          "mean": 2
+        },
+        "working_set_bytes": {
+          "sample_count": 5,
+          "min_bytes": 180727808,
+          "max_bytes": 188125184,
+          "mean_bytes": 186508902
+        },
+        "private_bytes": {
+          "sample_count": 5,
+          "min_bytes": 72519680,
+          "max_bytes": 73613312,
+          "mean_bytes": 73185690
+        }
+      }
+    },
+    "readiness": "renderer-ready-marker",
+    "reported_port": "ephemeral-loopback-port"
+  }
+}

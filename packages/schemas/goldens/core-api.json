@@ -1,0 +1,3307 @@
+{
+  "format": "lightphysics.core-api-json-schema-golden",
+  "schemas": {
+    "CallContextSchema": {
+      "$id": "urn:lightphysics:core-api:CallContextSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "idempotency_key": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "role": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "session_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "trace_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "work_order": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id",
+        "trace_id"
+      ],
+      "title": "CallContextSchema",
+      "type": "object"
+    },
+    "CoreCallContextSchema": {
+      "$id": "urn:lightphysics:core-api:CoreCallContextSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "idempotency_key": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "role": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "session_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "trace_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "work_order": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "session_id",
+        "trace_id"
+      ],
+      "title": "CoreCallContextSchema",
+      "type": "object"
+    },
+    "CoreErrorCodeSchema": {
+      "$id": "urn:lightphysics:core-api:CoreErrorCodeSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "enum": [
+        "ValidationError",
+        "NotFound",
+        "Conflict",
+        "PermissionDenied",
+        "ApprovalRequired",
+        "BudgetExceeded",
+        "ResourceUnavailable",
+        "ProviderError",
+        "Unqualified",
+        "EngineError",
+        "StaleEvidence",
+        "Cancelled",
+        "NotImplemented",
+        "Internal",
+        "Unauthorized",
+        "OriginRejected",
+        "MethodNotFound"
+      ],
+      "title": "CoreErrorCodeSchema"
+    },
+    "CoreEventDataSchema": {
+      "$id": "urn:lightphysics:core-api:CoreEventDataSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": {},
+      "title": "CoreEventDataSchema",
+      "type": "object"
+    },
+    "CoreEventSchema": {
+      "$id": "urn:lightphysics:core-api:CoreEventSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "context": {
+          "additionalProperties": false,
+          "properties": {
+            "idempotency_key": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "role": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "session_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "trace_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "work_order": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "session_id",
+            "trace_id"
+          ],
+          "type": "object"
+        },
+        "data": {
+          "additionalProperties": {},
+          "type": "object"
+        },
+        "event_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "event_name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "method": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "timestamp": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "event_name",
+        "timestamp"
+      ],
+      "title": "CoreEventSchema",
+      "type": "object"
+    },
+    "CoreJsonValueSchema": {
+      "$id": "urn:lightphysics:core-api:CoreJsonValueSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "CoreJsonValueSchema",
+      "x-lightphysics-json-bounds": {
+        "maxBytes": 65536,
+        "maxDepth": 24,
+        "maxItems": 1024,
+        "rejectsSecretLikeKeysAndValues": true
+      }
+    },
+    "ErrorEnvelopeSchema": {
+      "$id": "urn:lightphysics:core-api:ErrorEnvelopeSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "enum": [
+                "ValidationError",
+                "NotFound",
+                "Conflict",
+                "PermissionDenied",
+                "ApprovalRequired",
+                "BudgetExceeded",
+                "ResourceUnavailable",
+                "ProviderError",
+                "Unqualified",
+                "EngineError",
+                "StaleEvidence",
+                "Cancelled",
+                "NotImplemented",
+                "Internal",
+                "Unauthorized",
+                "OriginRejected",
+                "MethodNotFound"
+              ]
+            },
+            "details": {},
+            "message": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "retryable": {
+              "type": "boolean"
+            },
+            "suggested_next": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "retryable"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "error": {
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "enum": [
+                    "ValidationError",
+                    "NotFound",
+                    "Conflict",
+                    "PermissionDenied",
+                    "ApprovalRequired",
+                    "BudgetExceeded",
+                    "ResourceUnavailable",
+                    "ProviderError",
+                    "Unqualified",
+                    "EngineError",
+                    "StaleEvidence",
+                    "Cancelled",
+                    "NotImplemented",
+                    "Internal",
+                    "Unauthorized",
+                    "OriginRejected",
+                    "MethodNotFound"
+                  ]
+                },
+                "details": {},
+                "message": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "retryable": {
+                  "type": "boolean"
+                },
+                "suggested_next": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message",
+                "retryable"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "error"
+          ],
+          "type": "object"
+        }
+      ],
+      "title": "ErrorEnvelopeSchema"
+    },
+    "JobCancelParamsSchema": {
+      "$id": "urn:lightphysics:core-api:JobCancelParamsSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "reason": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "JobCancelParamsSchema",
+      "type": "object"
+    },
+    "JobCancelResultSchema": {
+      "$id": "urn:lightphysics:core-api:JobCancelResultSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "attempts": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "cancelReason": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        "cancelRequested": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "error": {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            "details": {
+              "x-lightphysics-json-bounds": {
+                "maxBytes": 65536,
+                "maxDepth": 24,
+                "maxItems": 1024,
+                "rejectsSecretLikeKeysAndValues": true
+              }
+            },
+            "message": {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            },
+            "retryable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "retryable"
+          ],
+          "type": "object"
+        },
+        "finishedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "lastStartedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "orphanedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "payload": {
+          "x-lightphysics-json-bounds": {
+            "maxBytes": 65536,
+            "maxDepth": 24,
+            "maxItems": 1024,
+            "rejectsSecretLikeKeysAndValues": true
+          }
+        },
+        "priority": {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "priorityClass": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "resources": {
+          "additionalProperties": false,
+          "properties": {
+            "diskMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "downshifts": {
+              "items": {
+                "x-lightphysics-json-bounds": {
+                  "maxBytes": 65536,
+                  "maxDepth": 24,
+                  "maxItems": 1024,
+                  "rejectsSecretLikeKeysAndValues": true
+                }
+              },
+              "maxItems": 16,
+              "type": "array"
+            },
+            "exclusive": {
+              "type": "boolean"
+            },
+            "ramMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "vramMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "diskMb",
+            "downshifts",
+            "exclusive",
+            "ramMb",
+            "vramMb"
+          ],
+          "type": "object"
+        },
+        "result": {
+          "x-lightphysics-json-bounds": {
+            "maxBytes": 65536,
+            "maxDepth": 24,
+            "maxItems": 1024,
+            "rejectsSecretLikeKeysAndValues": true
+          }
+        },
+        "resumable": {
+          "type": "boolean"
+        },
+        "startedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "queued",
+            "running",
+            "waiting_provider",
+            "waiting_human",
+            "succeeded",
+            "failed",
+            "cancelled",
+            "orphaned"
+          ]
+        },
+        "type": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "updatedAt": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attempts",
+        "cancelRequested",
+        "createdAt",
+        "id",
+        "payload",
+        "priority",
+        "priorityClass",
+        "resources",
+        "resumable",
+        "state",
+        "type",
+        "updatedAt"
+      ],
+      "title": "JobCancelResultSchema",
+      "type": "object"
+    },
+    "JobCreateParamsSchema": {
+      "$id": "urn:lightphysics:core-api:JobCreateParamsSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "input": {
+          "x-lightphysics-json-bounds": {
+            "maxBytes": 65536,
+            "maxDepth": 24,
+            "maxItems": 1024,
+            "rejectsSecretLikeKeysAndValues": true
+          }
+        },
+        "kind": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "payload": {
+          "x-lightphysics-json-bounds": {
+            "maxBytes": 65536,
+            "maxDepth": 24,
+            "maxItems": 1024,
+            "rejectsSecretLikeKeysAndValues": true
+          }
+        },
+        "priority": {
+          "anyOf": [
+            {
+              "enum": [
+                "batch",
+                "low",
+                "normal",
+                "user-visible",
+                "final",
+                "interactive",
+                "critical"
+              ]
+            },
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "integer"
+            }
+          ]
+        },
+        "resourceRequest": {
+          "additionalProperties": false,
+          "properties": {
+            "diskMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "disk_mb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "downshift": {
+              "anyOf": [
+                {
+                  "items": {
+                    "x-lightphysics-json-bounds": {
+                      "maxBytes": 65536,
+                      "maxDepth": 24,
+                      "maxItems": 1024,
+                      "rejectsSecretLikeKeysAndValues": true
+                    }
+                  },
+                  "maxItems": 16,
+                  "type": "array"
+                },
+                {
+                  "x-lightphysics-json-bounds": {
+                    "maxBytes": 65536,
+                    "maxDepth": 24,
+                    "maxItems": 1024,
+                    "rejectsSecretLikeKeysAndValues": true
+                  }
+                }
+              ]
+            },
+            "downshifts": {
+              "anyOf": [
+                {
+                  "items": {
+                    "x-lightphysics-json-bounds": {
+                      "maxBytes": 65536,
+                      "maxDepth": 24,
+                      "maxItems": 1024,
+                      "rejectsSecretLikeKeysAndValues": true
+                    }
+                  },
+                  "maxItems": 16,
+                  "type": "array"
+                },
+                {
+                  "x-lightphysics-json-bounds": {
+                    "maxBytes": 65536,
+                    "maxDepth": 24,
+                    "maxItems": 1024,
+                    "rejectsSecretLikeKeysAndValues": true
+                  }
+                }
+              ]
+            },
+            "exclusive": {
+              "type": "boolean"
+            },
+            "ramMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "ramPeakMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "ram_peak_mb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "vramMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "vramPeakMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "vram_peak_mb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "resources": {
+          "additionalProperties": false,
+          "properties": {
+            "diskMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "disk_mb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "downshift": {
+              "anyOf": [
+                {
+                  "items": {
+                    "x-lightphysics-json-bounds": {
+                      "maxBytes": 65536,
+                      "maxDepth": 24,
+                      "maxItems": 1024,
+                      "rejectsSecretLikeKeysAndValues": true
+                    }
+                  },
+                  "maxItems": 16,
+                  "type": "array"
+                },
+                {
+                  "x-lightphysics-json-bounds": {
+                    "maxBytes": 65536,
+                    "maxDepth": 24,
+                    "maxItems": 1024,
+                    "rejectsSecretLikeKeysAndValues": true
+                  }
+                }
+              ]
+            },
+            "downshifts": {
+              "anyOf": [
+                {
+                  "items": {
+                    "x-lightphysics-json-bounds": {
+                      "maxBytes": 65536,
+                      "maxDepth": 24,
+                      "maxItems": 1024,
+                      "rejectsSecretLikeKeysAndValues": true
+                    }
+                  },
+                  "maxItems": 16,
+                  "type": "array"
+                },
+                {
+                  "x-lightphysics-json-bounds": {
+                    "maxBytes": 65536,
+                    "maxDepth": 24,
+                    "maxItems": 1024,
+                    "rejectsSecretLikeKeysAndValues": true
+                  }
+                }
+              ]
+            },
+            "exclusive": {
+              "type": "boolean"
+            },
+            "ramMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "ramPeakMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "ram_peak_mb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "vramMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "vramPeakMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "vram_peak_mb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "resumable": {
+          "type": "boolean"
+        },
+        "type": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "title": "JobCreateParamsSchema",
+      "type": "object"
+    },
+    "JobCreateResultSchema": {
+      "$id": "urn:lightphysics:core-api:JobCreateResultSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "attempts": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "cancelReason": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        "cancelRequested": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "error": {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            "details": {
+              "x-lightphysics-json-bounds": {
+                "maxBytes": 65536,
+                "maxDepth": 24,
+                "maxItems": 1024,
+                "rejectsSecretLikeKeysAndValues": true
+              }
+            },
+            "message": {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            },
+            "retryable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "retryable"
+          ],
+          "type": "object"
+        },
+        "finishedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "lastStartedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "orphanedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "payload": {
+          "x-lightphysics-json-bounds": {
+            "maxBytes": 65536,
+            "maxDepth": 24,
+            "maxItems": 1024,
+            "rejectsSecretLikeKeysAndValues": true
+          }
+        },
+        "priority": {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "priorityClass": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "resources": {
+          "additionalProperties": false,
+          "properties": {
+            "diskMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "downshifts": {
+              "items": {
+                "x-lightphysics-json-bounds": {
+                  "maxBytes": 65536,
+                  "maxDepth": 24,
+                  "maxItems": 1024,
+                  "rejectsSecretLikeKeysAndValues": true
+                }
+              },
+              "maxItems": 16,
+              "type": "array"
+            },
+            "exclusive": {
+              "type": "boolean"
+            },
+            "ramMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "vramMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "diskMb",
+            "downshifts",
+            "exclusive",
+            "ramMb",
+            "vramMb"
+          ],
+          "type": "object"
+        },
+        "result": {
+          "x-lightphysics-json-bounds": {
+            "maxBytes": 65536,
+            "maxDepth": 24,
+            "maxItems": 1024,
+            "rejectsSecretLikeKeysAndValues": true
+          }
+        },
+        "resumable": {
+          "type": "boolean"
+        },
+        "startedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "queued",
+            "running",
+            "waiting_provider",
+            "waiting_human",
+            "succeeded",
+            "failed",
+            "cancelled",
+            "orphaned"
+          ]
+        },
+        "type": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "updatedAt": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attempts",
+        "cancelRequested",
+        "createdAt",
+        "id",
+        "payload",
+        "priority",
+        "priorityClass",
+        "resources",
+        "resumable",
+        "state",
+        "type",
+        "updatedAt"
+      ],
+      "title": "JobCreateResultSchema",
+      "type": "object"
+    },
+    "JobErrorDetailsSchema": {
+      "$id": "urn:lightphysics:core-api:JobErrorDetailsSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "details": {
+          "x-lightphysics-json-bounds": {
+            "maxBytes": 65536,
+            "maxDepth": 24,
+            "maxItems": 1024,
+            "rejectsSecretLikeKeysAndValues": true
+          }
+        },
+        "message": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        "retryable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "retryable"
+      ],
+      "title": "JobErrorDetailsSchema",
+      "type": "object"
+    },
+    "JobGetParamsSchema": {
+      "$id": "urn:lightphysics:core-api:JobGetParamsSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "JobGetParamsSchema",
+      "type": "object"
+    },
+    "JobGetResultSchema": {
+      "$id": "urn:lightphysics:core-api:JobGetResultSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "attempts": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "cancelReason": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        "cancelRequested": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "error": {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            "details": {
+              "x-lightphysics-json-bounds": {
+                "maxBytes": 65536,
+                "maxDepth": 24,
+                "maxItems": 1024,
+                "rejectsSecretLikeKeysAndValues": true
+              }
+            },
+            "message": {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            },
+            "retryable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "retryable"
+          ],
+          "type": "object"
+        },
+        "finishedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "lastStartedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "orphanedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "payload": {
+          "x-lightphysics-json-bounds": {
+            "maxBytes": 65536,
+            "maxDepth": 24,
+            "maxItems": 1024,
+            "rejectsSecretLikeKeysAndValues": true
+          }
+        },
+        "priority": {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "priorityClass": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "resources": {
+          "additionalProperties": false,
+          "properties": {
+            "diskMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "downshifts": {
+              "items": {
+                "x-lightphysics-json-bounds": {
+                  "maxBytes": 65536,
+                  "maxDepth": 24,
+                  "maxItems": 1024,
+                  "rejectsSecretLikeKeysAndValues": true
+                }
+              },
+              "maxItems": 16,
+              "type": "array"
+            },
+            "exclusive": {
+              "type": "boolean"
+            },
+            "ramMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "vramMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "diskMb",
+            "downshifts",
+            "exclusive",
+            "ramMb",
+            "vramMb"
+          ],
+          "type": "object"
+        },
+        "result": {
+          "x-lightphysics-json-bounds": {
+            "maxBytes": 65536,
+            "maxDepth": 24,
+            "maxItems": 1024,
+            "rejectsSecretLikeKeysAndValues": true
+          }
+        },
+        "resumable": {
+          "type": "boolean"
+        },
+        "startedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "queued",
+            "running",
+            "waiting_provider",
+            "waiting_human",
+            "succeeded",
+            "failed",
+            "cancelled",
+            "orphaned"
+          ]
+        },
+        "type": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "updatedAt": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attempts",
+        "cancelRequested",
+        "createdAt",
+        "id",
+        "payload",
+        "priority",
+        "priorityClass",
+        "resources",
+        "resumable",
+        "state",
+        "type",
+        "updatedAt"
+      ],
+      "title": "JobGetResultSchema",
+      "type": "object"
+    },
+    "JobSchema": {
+      "$id": "urn:lightphysics:core-api:JobSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "attempts": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "cancelReason": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        "cancelRequested": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "error": {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            "details": {
+              "x-lightphysics-json-bounds": {
+                "maxBytes": 65536,
+                "maxDepth": 24,
+                "maxItems": 1024,
+                "rejectsSecretLikeKeysAndValues": true
+              }
+            },
+            "message": {
+              "maxLength": 4096,
+              "minLength": 1,
+              "type": "string"
+            },
+            "retryable": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "retryable"
+          ],
+          "type": "object"
+        },
+        "finishedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "lastStartedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "orphanedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "payload": {
+          "x-lightphysics-json-bounds": {
+            "maxBytes": 65536,
+            "maxDepth": 24,
+            "maxItems": 1024,
+            "rejectsSecretLikeKeysAndValues": true
+          }
+        },
+        "priority": {
+          "maximum": 100,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "priorityClass": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "resources": {
+          "additionalProperties": false,
+          "properties": {
+            "diskMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "downshifts": {
+              "items": {
+                "x-lightphysics-json-bounds": {
+                  "maxBytes": 65536,
+                  "maxDepth": 24,
+                  "maxItems": 1024,
+                  "rejectsSecretLikeKeysAndValues": true
+                }
+              },
+              "maxItems": 16,
+              "type": "array"
+            },
+            "exclusive": {
+              "type": "boolean"
+            },
+            "ramMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "vramMb": {
+              "maximum": 2147483647,
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "diskMb",
+            "downshifts",
+            "exclusive",
+            "ramMb",
+            "vramMb"
+          ],
+          "type": "object"
+        },
+        "result": {
+          "x-lightphysics-json-bounds": {
+            "maxBytes": 65536,
+            "maxDepth": 24,
+            "maxItems": 1024,
+            "rejectsSecretLikeKeysAndValues": true
+          }
+        },
+        "resumable": {
+          "type": "boolean"
+        },
+        "startedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "queued",
+            "running",
+            "waiting_provider",
+            "waiting_human",
+            "succeeded",
+            "failed",
+            "cancelled",
+            "orphaned"
+          ]
+        },
+        "type": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "updatedAt": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attempts",
+        "cancelRequested",
+        "createdAt",
+        "id",
+        "payload",
+        "priority",
+        "priorityClass",
+        "resources",
+        "resumable",
+        "state",
+        "type",
+        "updatedAt"
+      ],
+      "title": "JobSchema",
+      "type": "object"
+    },
+    "JobStateSchema": {
+      "$id": "urn:lightphysics:core-api:JobStateSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "enum": [
+        "queued",
+        "running",
+        "waiting_provider",
+        "waiting_human",
+        "succeeded",
+        "failed",
+        "cancelled",
+        "orphaned"
+      ],
+      "title": "JobStateSchema"
+    },
+    "JsonRpcErrorResponseSchema": {
+      "$id": "urn:lightphysics:core-api:JsonRpcErrorResponseSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "type": "integer"
+            },
+            "data": {
+              "anyOf": [
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "enum": [
+                        "ValidationError",
+                        "NotFound",
+                        "Conflict",
+                        "PermissionDenied",
+                        "ApprovalRequired",
+                        "BudgetExceeded",
+                        "ResourceUnavailable",
+                        "ProviderError",
+                        "Unqualified",
+                        "EngineError",
+                        "StaleEvidence",
+                        "Cancelled",
+                        "NotImplemented",
+                        "Internal",
+                        "Unauthorized",
+                        "OriginRejected",
+                        "MethodNotFound"
+                      ]
+                    },
+                    "details": {},
+                    "message": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "retryable": {
+                      "type": "boolean"
+                    },
+                    "suggested_next": {
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "retryable"
+                  ],
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "error": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "code": {
+                          "enum": [
+                            "ValidationError",
+                            "NotFound",
+                            "Conflict",
+                            "PermissionDenied",
+                            "ApprovalRequired",
+                            "BudgetExceeded",
+                            "ResourceUnavailable",
+                            "ProviderError",
+                            "Unqualified",
+                            "EngineError",
+                            "StaleEvidence",
+                            "Cancelled",
+                            "NotImplemented",
+                            "Internal",
+                            "Unauthorized",
+                            "OriginRejected",
+                            "MethodNotFound"
+                          ]
+                        },
+                        "details": {},
+                        "message": {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "retryable": {
+                          "type": "boolean"
+                        },
+                        "suggested_next": {
+                          "minLength": 1,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message",
+                        "retryable"
+                      ],
+                      "type": "object"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "type": "object"
+                }
+              ]
+            },
+            "message": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "message"
+          ],
+          "type": "object"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "jsonrpc": {
+          "const": "2.0"
+        }
+      },
+      "required": [
+        "error",
+        "id",
+        "jsonrpc"
+      ],
+      "title": "JsonRpcErrorResponseSchema",
+      "type": "object"
+    },
+    "JsonRpcErrorSchema": {
+      "$id": "urn:lightphysics:core-api:JsonRpcErrorSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "integer"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "enum": [
+                    "ValidationError",
+                    "NotFound",
+                    "Conflict",
+                    "PermissionDenied",
+                    "ApprovalRequired",
+                    "BudgetExceeded",
+                    "ResourceUnavailable",
+                    "ProviderError",
+                    "Unqualified",
+                    "EngineError",
+                    "StaleEvidence",
+                    "Cancelled",
+                    "NotImplemented",
+                    "Internal",
+                    "Unauthorized",
+                    "OriginRejected",
+                    "MethodNotFound"
+                  ]
+                },
+                "details": {},
+                "message": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "retryable": {
+                  "type": "boolean"
+                },
+                "suggested_next": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message",
+                "retryable"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "error": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "code": {
+                      "enum": [
+                        "ValidationError",
+                        "NotFound",
+                        "Conflict",
+                        "PermissionDenied",
+                        "ApprovalRequired",
+                        "BudgetExceeded",
+                        "ResourceUnavailable",
+                        "ProviderError",
+                        "Unqualified",
+                        "EngineError",
+                        "StaleEvidence",
+                        "Cancelled",
+                        "NotImplemented",
+                        "Internal",
+                        "Unauthorized",
+                        "OriginRejected",
+                        "MethodNotFound"
+                      ]
+                    },
+                    "details": {},
+                    "message": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "retryable": {
+                      "type": "boolean"
+                    },
+                    "suggested_next": {
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "retryable"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "error"
+              ],
+              "type": "object"
+            }
+          ]
+        },
+        "message": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message"
+      ],
+      "title": "JsonRpcErrorSchema",
+      "type": "object"
+    },
+    "JsonRpcIdSchema": {
+      "$id": "urn:lightphysics:core-api:JsonRpcIdSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "JsonRpcIdSchema"
+    },
+    "JsonRpcRequestSchema": {
+      "$id": "urn:lightphysics:core-api:JsonRpcRequestSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "context": {
+          "additionalProperties": false,
+          "properties": {
+            "idempotency_key": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "role": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "session_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "trace_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "work_order": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "session_id",
+            "trace_id"
+          ],
+          "type": "object"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "jsonrpc": {
+          "const": "2.0"
+        },
+        "method": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "params": {}
+      },
+      "required": [
+        "jsonrpc",
+        "method"
+      ],
+      "title": "JsonRpcRequestSchema",
+      "type": "object"
+    },
+    "JsonRpcResponseSchema": {
+      "$id": "urn:lightphysics:core-api:JsonRpcResponseSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "anyOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "jsonrpc": {
+              "const": "2.0"
+            },
+            "result": {}
+          },
+          "required": [
+            "id",
+            "jsonrpc",
+            "result"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "error": {
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "integer"
+                },
+                "data": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "code": {
+                          "enum": [
+                            "ValidationError",
+                            "NotFound",
+                            "Conflict",
+                            "PermissionDenied",
+                            "ApprovalRequired",
+                            "BudgetExceeded",
+                            "ResourceUnavailable",
+                            "ProviderError",
+                            "Unqualified",
+                            "EngineError",
+                            "StaleEvidence",
+                            "Cancelled",
+                            "NotImplemented",
+                            "Internal",
+                            "Unauthorized",
+                            "OriginRejected",
+                            "MethodNotFound"
+                          ]
+                        },
+                        "details": {},
+                        "message": {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "retryable": {
+                          "type": "boolean"
+                        },
+                        "suggested_next": {
+                          "minLength": 1,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message",
+                        "retryable"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "error": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "code": {
+                              "enum": [
+                                "ValidationError",
+                                "NotFound",
+                                "Conflict",
+                                "PermissionDenied",
+                                "ApprovalRequired",
+                                "BudgetExceeded",
+                                "ResourceUnavailable",
+                                "ProviderError",
+                                "Unqualified",
+                                "EngineError",
+                                "StaleEvidence",
+                                "Cancelled",
+                                "NotImplemented",
+                                "Internal",
+                                "Unauthorized",
+                                "OriginRejected",
+                                "MethodNotFound"
+                              ]
+                            },
+                            "details": {},
+                            "message": {
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "retryable": {
+                              "type": "boolean"
+                            },
+                            "suggested_next": {
+                              "minLength": 1,
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "code",
+                            "message",
+                            "retryable"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "error"
+                      ],
+                      "type": "object"
+                    }
+                  ]
+                },
+                "message": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ],
+              "type": "object"
+            },
+            "id": {
+              "anyOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "jsonrpc": {
+              "const": "2.0"
+            }
+          },
+          "required": [
+            "error",
+            "id",
+            "jsonrpc"
+          ],
+          "type": "object"
+        }
+      ],
+      "title": "JsonRpcResponseSchema"
+    },
+    "JsonRpcSuccessResponseSchema": {
+      "$id": "urn:lightphysics:core-api:JsonRpcSuccessResponseSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "jsonrpc": {
+          "const": "2.0"
+        },
+        "result": {}
+      },
+      "required": [
+        "id",
+        "jsonrpc",
+        "result"
+      ],
+      "title": "JsonRpcSuccessResponseSchema",
+      "type": "object"
+    },
+    "ProjectReindexParamsSchema": {
+      "$id": "urn:lightphysics:core-api:ProjectReindexParamsSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {},
+      "title": "ProjectReindexParamsSchema",
+      "type": "object"
+    },
+    "ProjectReindexResultSchema": {
+      "$id": "urn:lightphysics:core-api:ProjectReindexResultSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "databasePath": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        "documents": {
+          "maximum": 100000,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "databasePath",
+        "documents",
+        "fingerprint"
+      ],
+      "title": "ProjectReindexResultSchema",
+      "type": "object"
+    },
+    "ProjectResumeDecisionSchema": {
+      "$id": "urn:lightphysics:core-api:ProjectResumeDecisionSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "context": {
+          "maxLength": 4096,
+          "type": "string"
+        },
+        "evidenceId": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "outcome": {
+          "maxLength": 4096,
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "proposed",
+            "approved-by-human",
+            "superseded"
+          ]
+        },
+        "title": {
+          "maxLength": 4096,
+          "type": "string"
+        }
+      },
+      "required": [
+        "context",
+        "id",
+        "outcome",
+        "path",
+        "status",
+        "title"
+      ],
+      "title": "ProjectResumeDecisionSchema",
+      "type": "object"
+    },
+    "ProjectResumeParamsSchema": {
+      "$id": "urn:lightphysics:core-api:ProjectResumeParamsSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {},
+      "title": "ProjectResumeParamsSchema",
+      "type": "object"
+    },
+    "ProjectResumeResultSchema": {
+      "$id": "urn:lightphysics:core-api:ProjectResumeResultSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "byteLength": {
+          "maximum": 10000,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "gateGaps": {
+          "items": {
+            "maxLength": 4096,
+            "type": "string"
+          },
+          "maxItems": 256,
+          "type": "array"
+        },
+        "nextActions": {
+          "items": {
+            "maxLength": 4096,
+            "type": "string"
+          },
+          "maxItems": 256,
+          "type": "array"
+        },
+        "pendingHumanDecisions": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "context": {
+                "maxLength": 4096,
+                "type": "string"
+              },
+              "evidenceId": {
+                "maxLength": 256,
+                "minLength": 1,
+                "type": "string"
+              },
+              "id": {
+                "maxLength": 256,
+                "minLength": 1,
+                "type": "string"
+              },
+              "outcome": {
+                "maxLength": 4096,
+                "type": "string"
+              },
+              "path": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "proposed",
+                  "approved-by-human",
+                  "superseded"
+                ]
+              },
+              "title": {
+                "maxLength": 4096,
+                "type": "string"
+              }
+            },
+            "required": [
+              "context",
+              "id",
+              "outcome",
+              "path",
+              "status",
+              "title"
+            ],
+            "type": "object"
+          },
+          "maxItems": 64,
+          "type": "array"
+        },
+        "readiness": {
+          "items": {
+            "maxLength": 4096,
+            "type": "string"
+          },
+          "maxItems": 256,
+          "type": "array"
+        },
+        "spend": {
+          "additionalProperties": false,
+          "properties": {
+            "budget": {
+              "type": "number"
+            },
+            "currency": {
+              "maxLength": 16,
+              "minLength": 1,
+              "type": "string"
+            },
+            "used": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "budget",
+            "currency",
+            "used"
+          ],
+          "type": "object"
+        },
+        "stage": {
+          "maxLength": 4096,
+          "type": "string"
+        },
+        "staleEvidence": {
+          "items": {
+            "maxLength": 4096,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 256,
+          "type": "array"
+        },
+        "tokenEstimate": {
+          "maximum": 2500,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "topWorkOrders": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "acceptance": {
+                "maxLength": 4096,
+                "type": "string"
+              },
+              "id": {
+                "maxLength": 256,
+                "minLength": 1,
+                "type": "string"
+              },
+              "path": {
+                "maxLength": 4096,
+                "minLength": 1,
+                "type": "string"
+              },
+              "priority": {
+                "maximum": 9,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "status": {
+                "enum": [
+                  "backlog",
+                  "ready",
+                  "in-progress",
+                  "blocked",
+                  "done"
+                ]
+              },
+              "title": {
+                "maxLength": 4096,
+                "type": "string"
+              }
+            },
+            "required": [
+              "acceptance",
+              "id",
+              "path",
+              "priority",
+              "status",
+              "title"
+            ],
+            "type": "object"
+          },
+          "maxItems": 64,
+          "type": "array"
+        }
+      },
+      "required": [
+        "byteLength",
+        "gateGaps",
+        "nextActions",
+        "pendingHumanDecisions",
+        "readiness",
+        "spend",
+        "stage",
+        "staleEvidence",
+        "tokenEstimate",
+        "topWorkOrders"
+      ],
+      "title": "ProjectResumeResultSchema",
+      "type": "object"
+    },
+    "ProjectResumeWorkOrderSchema": {
+      "$id": "urn:lightphysics:core-api:ProjectResumeWorkOrderSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "acceptance": {
+          "maxLength": 4096,
+          "type": "string"
+        },
+        "id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        "priority": {
+          "maximum": 9,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "backlog",
+            "ready",
+            "in-progress",
+            "blocked",
+            "done"
+          ]
+        },
+        "title": {
+          "maxLength": 4096,
+          "type": "string"
+        }
+      },
+      "required": [
+        "acceptance",
+        "id",
+        "path",
+        "priority",
+        "status",
+        "title"
+      ],
+      "title": "ProjectResumeWorkOrderSchema",
+      "type": "object"
+    },
+    "ResourceRequestInputSchema": {
+      "$id": "urn:lightphysics:core-api:ResourceRequestInputSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "diskMb": {
+          "maximum": 2147483647,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "disk_mb": {
+          "maximum": 2147483647,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "downshift": {
+          "anyOf": [
+            {
+              "items": {
+                "x-lightphysics-json-bounds": {
+                  "maxBytes": 65536,
+                  "maxDepth": 24,
+                  "maxItems": 1024,
+                  "rejectsSecretLikeKeysAndValues": true
+                }
+              },
+              "maxItems": 16,
+              "type": "array"
+            },
+            {
+              "x-lightphysics-json-bounds": {
+                "maxBytes": 65536,
+                "maxDepth": 24,
+                "maxItems": 1024,
+                "rejectsSecretLikeKeysAndValues": true
+              }
+            }
+          ]
+        },
+        "downshifts": {
+          "anyOf": [
+            {
+              "items": {
+                "x-lightphysics-json-bounds": {
+                  "maxBytes": 65536,
+                  "maxDepth": 24,
+                  "maxItems": 1024,
+                  "rejectsSecretLikeKeysAndValues": true
+                }
+              },
+              "maxItems": 16,
+              "type": "array"
+            },
+            {
+              "x-lightphysics-json-bounds": {
+                "maxBytes": 65536,
+                "maxDepth": 24,
+                "maxItems": 1024,
+                "rejectsSecretLikeKeysAndValues": true
+              }
+            }
+          ]
+        },
+        "exclusive": {
+          "type": "boolean"
+        },
+        "ramMb": {
+          "maximum": 2147483647,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "ramPeakMb": {
+          "maximum": 2147483647,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "ram_peak_mb": {
+          "maximum": 2147483647,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "vramMb": {
+          "maximum": 2147483647,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "vramPeakMb": {
+          "maximum": 2147483647,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "vram_peak_mb": {
+          "maximum": 2147483647,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "title": "ResourceRequestInputSchema",
+      "type": "object"
+    },
+    "ResourceRequestSchema": {
+      "$id": "urn:lightphysics:core-api:ResourceRequestSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "diskMb": {
+          "maximum": 2147483647,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "downshifts": {
+          "items": {
+            "x-lightphysics-json-bounds": {
+              "maxBytes": 65536,
+              "maxDepth": 24,
+              "maxItems": 1024,
+              "rejectsSecretLikeKeysAndValues": true
+            }
+          },
+          "maxItems": 16,
+          "type": "array"
+        },
+        "exclusive": {
+          "type": "boolean"
+        },
+        "ramMb": {
+          "maximum": 2147483647,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "vramMb": {
+          "maximum": 2147483647,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "diskMb",
+        "downshifts",
+        "exclusive",
+        "ramMb",
+        "vramMb"
+      ],
+      "title": "ResourceRequestSchema",
+      "type": "object"
+    },
+    "RpcErrorEnvelopeSchema": {
+      "$id": "urn:lightphysics:core-api:RpcErrorEnvelopeSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "enum": [
+                "ValidationError",
+                "NotFound",
+                "Conflict",
+                "PermissionDenied",
+                "ApprovalRequired",
+                "BudgetExceeded",
+                "ResourceUnavailable",
+                "ProviderError",
+                "Unqualified",
+                "EngineError",
+                "StaleEvidence",
+                "Cancelled",
+                "NotImplemented",
+                "Internal",
+                "Unauthorized",
+                "OriginRejected",
+                "MethodNotFound"
+              ]
+            },
+            "details": {},
+            "message": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "retryable": {
+              "type": "boolean"
+            },
+            "suggested_next": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "retryable"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "error"
+      ],
+      "title": "RpcErrorEnvelopeSchema",
+      "type": "object"
+    },
+    "SystemInfoParamsSchema": {
+      "$id": "urn:lightphysics:core-api:SystemInfoParamsSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {},
+      "title": "SystemInfoParamsSchema",
+      "type": "object"
+    },
+    "SystemInfoRequestSchema": {
+      "$id": "urn:lightphysics:core-api:SystemInfoRequestSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "context": {
+          "additionalProperties": false,
+          "properties": {
+            "idempotency_key": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "role": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "session_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "trace_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "work_order": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "session_id",
+            "trace_id"
+          ],
+          "type": "object"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "jsonrpc": {
+          "const": "2.0"
+        },
+        "method": {
+          "const": "system.info"
+        },
+        "params": {
+          "additionalProperties": false,
+          "properties": {},
+          "type": "object"
+        }
+      },
+      "required": [
+        "jsonrpc",
+        "method"
+      ],
+      "title": "SystemInfoRequestSchema",
+      "type": "object"
+    },
+    "SystemInfoResponseSchema": {
+      "$id": "urn:lightphysics:core-api:SystemInfoResponseSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "anyOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "jsonrpc": {
+              "const": "2.0"
+            },
+            "result": {
+              "additionalProperties": true,
+              "properties": {
+                "apiVersion": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "arch": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "bind": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "name": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "node": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "nodeVersion": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "pid": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "platform": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "port": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "product": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "uptimeSeconds": {
+                  "minimum": 0,
+                  "type": "number"
+                },
+                "version": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "nodeVersion",
+                "pid",
+                "platform",
+                "uptimeSeconds",
+                "version"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "id",
+            "jsonrpc",
+            "result"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "error": {
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "integer"
+                },
+                "data": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "code": {
+                          "enum": [
+                            "ValidationError",
+                            "NotFound",
+                            "Conflict",
+                            "PermissionDenied",
+                            "ApprovalRequired",
+                            "BudgetExceeded",
+                            "ResourceUnavailable",
+                            "ProviderError",
+                            "Unqualified",
+                            "EngineError",
+                            "StaleEvidence",
+                            "Cancelled",
+                            "NotImplemented",
+                            "Internal",
+                            "Unauthorized",
+                            "OriginRejected",
+                            "MethodNotFound"
+                          ]
+                        },
+                        "details": {},
+                        "message": {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "retryable": {
+                          "type": "boolean"
+                        },
+                        "suggested_next": {
+                          "minLength": 1,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message",
+                        "retryable"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "error": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "code": {
+                              "enum": [
+                                "ValidationError",
+                                "NotFound",
+                                "Conflict",
+                                "PermissionDenied",
+                                "ApprovalRequired",
+                                "BudgetExceeded",
+                                "ResourceUnavailable",
+                                "ProviderError",
+                                "Unqualified",
+                                "EngineError",
+                                "StaleEvidence",
+                                "Cancelled",
+                                "NotImplemented",
+                                "Internal",
+                                "Unauthorized",
+                                "OriginRejected",
+                                "MethodNotFound"
+                              ]
+                            },
+                            "details": {},
+                            "message": {
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "retryable": {
+                              "type": "boolean"
+                            },
+                            "suggested_next": {
+                              "minLength": 1,
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "code",
+                            "message",
+                            "retryable"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "error"
+                      ],
+                      "type": "object"
+                    }
+                  ]
+                },
+                "message": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ],
+              "type": "object"
+            },
+            "id": {
+              "anyOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "jsonrpc": {
+              "const": "2.0"
+            }
+          },
+          "required": [
+            "error",
+            "id",
+            "jsonrpc"
+          ],
+          "type": "object"
+        }
+      ],
+      "title": "SystemInfoResponseSchema"
+    },
+    "SystemInfoResultSchema": {
+      "$id": "urn:lightphysics:core-api:SystemInfoResultSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": true,
+      "properties": {
+        "apiVersion": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "arch": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "bind": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "node": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "nodeVersion": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "pid": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "platform": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "port": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "product": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "uptimeSeconds": {
+          "minimum": 0,
+          "type": "number"
+        },
+        "version": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "nodeVersion",
+        "pid",
+        "platform",
+        "uptimeSeconds",
+        "version"
+      ],
+      "title": "SystemInfoResultSchema",
+      "type": "object"
+    },
+    "SystemPingParamsSchema": {
+      "$id": "urn:lightphysics:core-api:SystemPingParamsSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {},
+      "title": "SystemPingParamsSchema",
+      "type": "object"
+    },
+    "SystemPingRequestSchema": {
+      "$id": "urn:lightphysics:core-api:SystemPingRequestSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "context": {
+          "additionalProperties": false,
+          "properties": {
+            "idempotency_key": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "role": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "session_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "trace_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "work_order": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "session_id",
+            "trace_id"
+          ],
+          "type": "object"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "jsonrpc": {
+          "const": "2.0"
+        },
+        "method": {
+          "const": "system.ping"
+        },
+        "params": {
+          "additionalProperties": false,
+          "properties": {},
+          "type": "object"
+        }
+      },
+      "required": [
+        "jsonrpc",
+        "method"
+      ],
+      "title": "SystemPingRequestSchema",
+      "type": "object"
+    },
+    "SystemPingResponseSchema": {
+      "$id": "urn:lightphysics:core-api:SystemPingResponseSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "anyOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "jsonrpc": {
+              "const": "2.0"
+            },
+            "result": {
+              "additionalProperties": true,
+              "anyOf": [
+                {
+                  "required": [
+                    "ok"
+                  ]
+                },
+                {
+                  "required": [
+                    "pong"
+                  ]
+                }
+              ],
+              "properties": {
+                "ok": {
+                  "const": true
+                },
+                "pong": {
+                  "const": true
+                },
+                "service": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "timestamp": {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "required": [
+            "id",
+            "jsonrpc",
+            "result"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "error": {
+              "additionalProperties": false,
+              "properties": {
+                "code": {
+                  "type": "integer"
+                },
+                "data": {
+                  "anyOf": [
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "code": {
+                          "enum": [
+                            "ValidationError",
+                            "NotFound",
+                            "Conflict",
+                            "PermissionDenied",
+                            "ApprovalRequired",
+                            "BudgetExceeded",
+                            "ResourceUnavailable",
+                            "ProviderError",
+                            "Unqualified",
+                            "EngineError",
+                            "StaleEvidence",
+                            "Cancelled",
+                            "NotImplemented",
+                            "Internal",
+                            "Unauthorized",
+                            "OriginRejected",
+                            "MethodNotFound"
+                          ]
+                        },
+                        "details": {},
+                        "message": {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "retryable": {
+                          "type": "boolean"
+                        },
+                        "suggested_next": {
+                          "minLength": 1,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "code",
+                        "message",
+                        "retryable"
+                      ],
+                      "type": "object"
+                    },
+                    {
+                      "additionalProperties": false,
+                      "properties": {
+                        "error": {
+                          "additionalProperties": false,
+                          "properties": {
+                            "code": {
+                              "enum": [
+                                "ValidationError",
+                                "NotFound",
+                                "Conflict",
+                                "PermissionDenied",
+                                "ApprovalRequired",
+                                "BudgetExceeded",
+                                "ResourceUnavailable",
+                                "ProviderError",
+                                "Unqualified",
+                                "EngineError",
+                                "StaleEvidence",
+                                "Cancelled",
+                                "NotImplemented",
+                                "Internal",
+                                "Unauthorized",
+                                "OriginRejected",
+                                "MethodNotFound"
+                              ]
+                            },
+                            "details": {},
+                            "message": {
+                              "minLength": 1,
+                              "type": "string"
+                            },
+                            "retryable": {
+                              "type": "boolean"
+                            },
+                            "suggested_next": {
+                              "minLength": 1,
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "code",
+                            "message",
+                            "retryable"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "required": [
+                        "error"
+                      ],
+                      "type": "object"
+                    }
+                  ]
+                },
+                "message": {
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "code",
+                "message"
+              ],
+              "type": "object"
+            },
+            "id": {
+              "anyOf": [
+                {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "jsonrpc": {
+              "const": "2.0"
+            }
+          },
+          "required": [
+            "error",
+            "id",
+            "jsonrpc"
+          ],
+          "type": "object"
+        }
+      ],
+      "title": "SystemPingResponseSchema"
+    },
+    "SystemPingResultSchema": {
+      "$id": "urn:lightphysics:core-api:SystemPingResultSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": true,
+      "anyOf": [
+        {
+          "required": [
+            "ok"
+          ]
+        },
+        {
+          "required": [
+            "pong"
+          ]
+        }
+      ],
+      "properties": {
+        "ok": {
+          "const": true
+        },
+        "pong": {
+          "const": true
+        },
+        "service": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "timestamp": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "title": "SystemPingResultSchema",
+      "type": "object"
+    },
+    "TypedErrorEnvelopeSchema": {
+      "$id": "urn:lightphysics:core-api:TypedErrorEnvelopeSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "enum": [
+                "ValidationError",
+                "NotFound",
+                "Conflict",
+                "PermissionDenied",
+                "ApprovalRequired",
+                "BudgetExceeded",
+                "ResourceUnavailable",
+                "ProviderError",
+                "Unqualified",
+                "EngineError",
+                "StaleEvidence",
+                "Cancelled",
+                "NotImplemented",
+                "Internal",
+                "Unauthorized",
+                "OriginRejected",
+                "MethodNotFound"
+              ]
+            },
+            "details": {},
+            "message": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "retryable": {
+              "type": "boolean"
+            },
+            "suggested_next": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "retryable"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "error"
+      ],
+      "title": "TypedErrorEnvelopeSchema",
+      "type": "object"
+    },
+    "TypedErrorSchema": {
+      "$id": "urn:lightphysics:core-api:TypedErrorSchema",
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "enum": [
+            "ValidationError",
+            "NotFound",
+            "Conflict",
+            "PermissionDenied",
+            "ApprovalRequired",
+            "BudgetExceeded",
+            "ResourceUnavailable",
+            "ProviderError",
+            "Unqualified",
+            "EngineError",
+            "StaleEvidence",
+            "Cancelled",
+            "NotImplemented",
+            "Internal",
+            "Unauthorized",
+            "OriginRejected",
+            "MethodNotFound"
+          ]
+        },
+        "details": {},
+        "message": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "retryable": {
+          "type": "boolean"
+        },
+        "suggested_next": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "retryable"
+      ],
+      "title": "TypedErrorSchema",
+      "type": "object"
+    }
+  },
+  "version": 1
+}

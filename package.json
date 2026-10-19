@@ -1,0 +1,56 @@
+{
+  "name": "lightphysics",
+  "version": "0.0.0",
+  "private": true,
+  "description": "LightPhysics native-AI game studio bootstrap",
+  "type": "module",
+  "packageManager": "pnpm@12.14.0",
+  "engines": {
+    "node": "24.18.0",
+    "pnpm": "12.14.0"
+  },
+  "bin": {
+    "lpd": "apps/lpd/src/main.ts",
+    "lp": "apps/cli/src/main.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/node": "22.20.5",
+    "sqlite-vec": "0.1.9",
+    "typescript": "5.9.3",
+    "vitest": "2.1.9"
+  },
+  "scripts": {
+    "setup": "pnpm install --frozen-lockfile",
+    "lpd": "node --experimental-strip-types apps/lpd/src/main.ts",
+    "lp": "node --experimental-strip-types apps/cli/src/main.ts",
+    "run": "node --experimental-strip-types apps/lpd/src/main.ts",
+    "gui-smoke": "node scripts/gui-smoke.mjs",
+    "test:electron": "node scripts/electron-smoke.mjs",
+    "test:electron-human-channel": "node scripts/electron-human-channel-smoke.mjs",
+    "measure:electron-footprint": "node scripts/electron-footprint.mjs",
+    "test:godot": "node scripts/godot-smoke.mjs",
+    "test:e2e": "playwright test",
+    "test": "node scripts/test.mjs",
+    "test:fast": "node scripts/test.mjs --fast",
+    "test:unit": "node --experimental-strip-types --test tests/bootstrap.test.ts",
+    "typecheck": "node scripts/typecheck.mjs",
+    "lint": "node scripts/config-lint.mjs",
+    "path-scan": "node scripts/path-scan.mjs",
+    "secret-scan": "node scripts/secret-scan.mjs",
+    "env-sync": "node scripts/env-sync.mjs --check",
+    "env-sync:write": "node scripts/env-sync.mjs --write",
+    "ledger-lint": "node scripts/ledger-lint.mjs",
+    "adr-lint": "node scripts/adr-lint.mjs",
+    "state-lint": "node scripts/state-lint.mjs",
+    "pin-check": "node scripts/pin-check.mjs",
+    "db-spike": "node scripts/db-spike.mjs",
+    "docker-build": "docker build --target runtime -t lightphysics:runtime .",
+    "docker-test": "docker build --target test -t lightphysics:test . && docker run --rm --network none lightphysics:test",
+    "docker-smoke": "node scripts/docker-smoke.mjs",
+    "docker-run": "node scripts/docker-run.mjs",
+    "verify-rebuild": "bash scripts/verify-rebuild.sh 0",
+    "test:live": "node scripts/not-implemented.mjs test:live",
+    "test:hw": "node scripts/not-implemented.mjs test:hw"
+  }
+}

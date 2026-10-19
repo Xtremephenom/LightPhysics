@@ -1,0 +1,137 @@
+{
+  "criterion": "P0-E7",
+  "status": "PARTIAL",
+  "date": "2026-10-19",
+  "commit": "42ef479",
+  "machine_profile": "windows-node-24.18.0",
+  "platform": "win32-x64",
+  "runtime": "v24.18.0",
+  "artifact": {
+    "tool": "godot",
+    "version": "4.7.2",
+    "component": "editor",
+    "lock_entry": "tools.lock.json#tools.godot.editor.win-x64",
+    "sha256": "731980f9608d61333e5baf54a2ef17210acc7a538446c0cb9969f002aca1e953",
+    "archive_bytes": 86013866,
+    "archive_source": "<external-temporary-directory>/godot.zip",
+    "destination": "<external-temporary-directory>/install-42ef479; cleaned"
+  },
+  "installer": {
+    "sha256_checked_before_parse_or_extraction": true,
+    "redirect_policy": "the initial fetch used manual HTTPS-only locations and final URLs with a maximum of 3 redirects; later retries used the already-fetched external archive as a local path",
+    "zip_entries": [
+      {
+        "name": "Godot_v4.7.2-stable_win64.exe",
+        "method": 8,
+        "flags": "0x0002"
+      },
+      {
+        "name": "Godot_v4.7.2-stable_win64_console.exe",
+        "method": 8,
+        "flags": "0x0002"
+      }
+    ],
+    "attempts": [
+      {
+        "source": "remote-fetch",
+        "archive_limit_bytes": 67108864,
+        "result": "FAIL",
+        "error_code": "ARCHIVE_TOO_LARGE",
+        "error_message": "remote archive exceeds the configured size limit"
+      },
+      {
+        "source": "remote-fetch",
+        "archive_limit_bytes": 268435456,
+        "result": "FAIL",
+        "error_code": "UNSUPPORTED_ZIP_ENTRY",
+        "error_message": "ZIP entry flags are not supported",
+        "hash_verification": "reached ZIP parsing after the SHA-256 check; no HASH_MISMATCH occurred"
+      },
+      {
+        "source": "local-archive-cli",
+        "archive_limit_bytes": 268435456,
+        "entry_limit_bytes": 134217728,
+        "result": "FAIL",
+        "error_code": "ZIP_SIZE_LIMIT",
+        "error_message": "ZIP entry exceeds the configured size limit",
+        "note": "The committed CLI was invoked with its bounded 256 MiB archive option; the existing default per-entry bound remained 128 MiB."
+      },
+      {
+        "source": "local-archive-limits-override",
+        "archive_limit_bytes": 268435456,
+        "entry_limit_bytes": 268435456,
+        "total_limit_bytes": 536870912,
+        "result": "PASS",
+        "archive_sha256": "731980f9608d61333e5baf54a2ef17210acc7a538446c0cb9969f002aca1e953",
+        "file_count": 2,
+        "directory_count": 0,
+        "extracted_files": [
+          "Godot_v4.7.2-stable_win64.exe",
+          "Godot_v4.7.2-stable_win64_console.exe"
+        ]
+      }
+    ],
+    "temporary_destination_cleanup": "PASS"
+  },
+  "extracted_executables": [
+    {
+      "name": "Godot_v4.7.2-stable_win64.exe",
+      "sha256": "ab1824f85bfd8e0e4128182c000c4003a3e042245b2967848d089b2a04b22424"
+    },
+    {
+      "name": "Godot_v4.7.2-stable_win64_console.exe",
+      "sha256": "c8f0a6bc45a19b33541501e57f6f7cd972ab18453743266339d495cbbe846643"
+    }
+  ],
+  "godot_smoke": {
+    "status": "PASS",
+    "command": "node scripts/godot-smoke.mjs --godot <external-temporary-directory>/install-42ef479/Godot_v4.7.2-stable_win64_console.exe --timeout-ms 30000 --max-output-bytes 65536",
+    "timeout_ms": 30000,
+    "max_output_bytes": 65536,
+    "marker": "LIGHTPHYSICS_GODOT_SMOKE_PASS",
+    "engine_version": "Godot Engine v4.7.2.stable.official.ed1daf0bf",
+    "results": [
+      {
+        "mode": "boot",
+        "ok": true,
+        "code": 0,
+        "signal": null,
+        "timed_out": false,
+        "duration_ms": 215,
+        "classification": "boot-marker",
+        "expected_exit": "zero",
+        "message": "headless boot exited 0 and emitted the success marker"
+      },
+      {
+        "mode": "check-valid",
+        "ok": true,
+        "code": 0,
+        "signal": null,
+        "timed_out": false,
+        "duration_ms": 218,
+        "classification": "check-only-success",
+        "expected_exit": "zero",
+        "message": "valid script --check-only exited 0"
+      },
+      {
+        "mode": "check-invalid",
+        "ok": true,
+        "code": 1,
+        "signal": null,
+        "timed_out": false,
+        "duration_ms": 218,
+        "classification": "check-only-failure",
+        "expected_exit": "nonzero",
+        "message": "invalid script --check-only exited nonzero (1)",
+        "typed_engine_error": "SCRIPT ERROR: Parse Error: Expected grouping expression."
+      }
+    ]
+  },
+  "qualification": "QUALIFIED_FOR_PINNED_WINDOWS_X64_EDITOR_FIXTURE_SMOKE_ONLY",
+  "notes": [
+    "The archive SHA-256 matched the lock entry before ZIP parsing and extraction; the two method-8 entries used the previously rejected 0x0002 compression-option flag.",
+    "The successful install used explicit bounded archive, per-entry, and total-output limits through the committed installTool limits override; production defaults and parser safety checks were not weakened.",
+    "The direct committed smoke runner passed on this Windows x64 host. The pnpm separator form was not used because this pinned pnpm invocation passed a literal -- to the runner and returned ARGUMENT_INVALID before launching Godot.",
+    "No Linux, Docker, GUI, gameplay, rendering, packaging, export-template, performance, or cross-platform Godot qualification is claimed."
+  ]
+}

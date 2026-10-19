@@ -1,0 +1,43 @@
+{
+  "criterion": "P0-E3",
+  "status": "PARTIAL",
+  "date": "2026-10-19",
+  "commit": "f8113e6",
+  "machine_profile": "windows-node-24.18.0",
+  "platform": "win32-x64",
+  "runtime": "v24.18.0",
+  "artifact": {
+    "tool": "blender",
+    "version": "5.2.2",
+    "lock_entry": "tools.lock.json#tools.blender.platforms.win-x64",
+    "url": "https://download.blender.org/release/Blender5.2/blender-5.2.2-windows-x64.zip",
+    "sha256": "3849d17a682cba006075aaa3f3597ecb5c9c30ec31035b2e092c53e40679b535",
+    "archive_source": "remote HTTPS fetch",
+    "archive_sha256_checked_before_parse_or_extraction": true,
+    "archive_limit_bytes": 1073741824,
+    "max_entries": 65536,
+    "entry_limit_bytes": 1073741824,
+    "total_limit_bytes": 2147483648
+  },
+  "installer": {
+    "file_count": 6525,
+    "directory_count": 975,
+    "extracted_executable": "blender-5.2.2-windows-x64/blender.exe",
+    "temporary_destination": "<external-temporary-directory>/blender; cleaned after the smoke"
+  },
+  "runtime_smoke": {
+    "status": "PASS",
+    "command": "blender.exe --background --factory-startup --disable-autoexec --python-expr <marker script>",
+    "exit_code": 0,
+    "signal": null,
+    "marker": "LIGHTPHYSICS_BLENDER_SMOKE_PASS",
+    "stdout_tail": "LIGHTPHYSICS_BLENDER_SMOKE_PASS\nBlender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:37:04)\nBlender quit",
+    "stderr": ""
+  },
+  "qualification": "QUALIFIED_FOR_PINNED_WINDOWS_X64_BLENDER_BACKGROUND_SMOKE_ONLY",
+  "notes": [
+    "The archive SHA-256 matched before ZIP parsing/extraction and the destination was removed after the smoke.",
+    "The same committed installer later qualified the pinned Linux tar.xz artifact and background smoke in the pinned Docker base image; that result is recorded separately in blender-linux-docker.json.",
+    "This evidence proves the Windows x64 background smoke only; it does not qualify rendering, add-ons, Python workflows, packaging, or other profiles."
+  ]
+}

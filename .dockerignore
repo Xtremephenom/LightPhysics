@@ -1,0 +1,17 @@
+.git
+.gitignore
+node_modules
+.pnpm-store
+coverage
+dist
+.env
+.env.*
+!.env.example
+models
+docs/evidence
+!docs/evidence/
+!docs/evidence/phase0/
+!docs/evidence/phase0/db-spike.json
+*.log
+*.sqlite
+*.sqlite3

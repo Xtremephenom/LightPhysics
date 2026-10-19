@@ -1,0 +1,60 @@
+{
+  "criterion": "P0-E3",
+  "status": "PASS",
+  "date": "2026-10-19",
+  "commit": "2b4b236",
+  "machine_profile": "docker-linux-x64-node-24.18.0",
+  "platform": "linux-x64",
+  "container": {
+    "base_image": "node:24.18.0-bookworm-slim",
+    "digest": "sha256:d45d78e7929b46875bbd4e29bea672d5bc48186c6c3588306521c815e78352d6"
+  },
+  "runtime": "v24.18.0",
+  "artifact": {
+    "tool": "ffmpeg",
+    "version": "9.0.2",
+    "build": "n9.0.2-28-g669f5ab083",
+    "variant": "lgpl-static",
+    "lock_entry": "tools.lock.json#tools.ffmpeg.platforms.linux-x64",
+    "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-10-18-13-01/ffmpeg-n9.0.2-28-g669f5ab083-linux64-lgpl-9.0.tar.xz",
+    "sha256": "b2ee4166aa1f068ac261cbdb637667f789c58f3556b463c41221ca8d971ac793",
+    "archive_format": "tar.xz",
+    "archive_root": "ffmpeg-n9.0.2-28-g669f5ab083-linux64-lgpl-9.0",
+    "binary": "bin/ffmpeg",
+    "temporary_destination": "/opt/lp-tools/ffmpeg; image layer only"
+  },
+  "installer": {
+    "status": "PASS",
+    "command": "node /opt/lp-bootstrap/install-ffmpeg.mjs --lock /opt/lp-bootstrap/tools.lock.json --platform linux-x64 --destination /opt/lp-tools/ffmpeg",
+    "sha256_checked_before_parse_or_extraction": true,
+    "limits": {
+      "max_archive_bytes": 268435456,
+      "max_entries": 4096,
+      "max_entry_uncompressed_bytes": 536870912,
+      "max_total_uncompressed_bytes": 1073741824
+    },
+    "executable_bit_preserved": true
+  },
+  "docker_build": {
+    "status": "PASS",
+    "command": "docker build --target base --tag lightphysics:ffmpeg-test .",
+    "networked_stage": "artifact fetch and hash-checked install",
+    "image_binary": "/usr/local/bin/ffmpeg"
+  },
+  "ffmpeg_smoke": {
+    "status": "PASS",
+    "command": "docker run --rm --network none lightphysics:ffmpeg-test node /opt/lp-bootstrap/ffmpeg-smoke.mjs --ffmpeg /usr/local/bin/ffmpeg --timeout-ms 30000",
+    "timeout_ms": 30000,
+    "version": "9.0.2",
+    "version_classification": "version-match",
+    "processing_classification": "processing-success",
+    "expected_exit": "zero",
+    "message": "FFmpeg processed the deterministic lavfi color frame into the null muxer"
+  },
+  "qualification": "QUALIFIED_FOR_PINNED_LINUX_X64_DOCKER_LGPL_STATIC_VERSION_AND_LAVFI_SMOKE_ONLY",
+  "notes": [
+    "The network-disabled container used the installed static artifact and did not fetch FFmpeg or use an apt-managed FFmpeg package.",
+    "The selected LGPL static build is scoped to this binary/version smoke; FFmpeg upstream terms do not choose the LightPhysics project license.",
+    "No native Linux, non-x64, codec-quality, rendering, packaging, or other FFmpeg profile is claimed."
+  ]
+}

@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#11131a" />
+    <title>LightPhysics — Studio Floor</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="/" aria-label="LightPhysics home">
+          <span class="brand-mark" aria-hidden="true">✦</span>
+          <span>
+            <strong>LightPhysics</strong>
+            <small>Think it. World it.</small>
+          </span>
+        </a>
+        <div class="topbar-actions">
+          <span class="connection-pill" id="connection-pill" data-state="idle">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span id="connection-label">Not connected</span>
+          </span>
+          <button class="icon-button" id="refresh-button" type="button" title="Refresh daemon status" aria-label="Refresh daemon status">↻</button>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <aside class="sidebar" aria-label="Primary navigation">
+          <div class="project-switcher">
+            <span class="project-icon" aria-hidden="true">LP</span>
+            <span>
+              <strong>Untitled project</strong>
+              <small>Phase 0 workspace</small>
+            </span>
+            <span class="chevron" aria-hidden="true">⌄</span>
+          </div>
+          <nav class="nav-list">
+            <a class="nav-item active" href="#studio-floor"><span aria-hidden="true">◈</span> Studio Floor</a>
+            <a class="nav-item" href="#project"><span aria-hidden="true">▦</span> Project</a>
+            <a class="nav-item" href="#assets"><span aria-hidden="true">◇</span> Assets</a>
+            <a class="nav-item" href="#models"><span aria-hidden="true">✧</span> Models &amp; Providers</a>
+            <a class="nav-item" href="#skills"><span aria-hidden="true">⌘</span> Skills &amp; Tools</a>
+            <a class="nav-item" href="#quality"><span aria-hidden="true">✓</span> Production &amp; Quality</a>
+          </nav>
+          <div class="sidebar-spacer"></div>
+          <nav class="nav-list secondary-nav">
+            <a class="nav-item" href="#activity"><span aria-hidden="true">≋</span> Activity</a>
+            <a class="nav-item" href="#security"><span aria-hidden="true">⌑</span> Security &amp; Control</a>
+          </nav>
+          <div class="sidebar-footer">
+            <span class="avatar" aria-hidden="true">B</span>
+            <span><strong>Builder mode</strong><small>Local workspace</small></span>
+            <span class="more" aria-hidden="true">•••</span>
+          </div>
+        </aside>
+
+        <main class="main-content" id="studio-floor">
+          <section class="page-heading">
+            <div>
+              <p class="eyebrow">STUDIO FLOOR</p>
+              <h1>Good morning, creator.</h1>
+              <p class="muted">Your studio is ready for the next small, playable step.</p>
+            </div>
+            <button class="primary-button" type="button" id="new-project-button"><span aria-hidden="true">＋</span> New project</button>
+          </section>
+
+          <section class="notice-card" aria-label="Daemon connection">
+            <div class="notice-icon" aria-hidden="true">⌁</div>
+            <div class="notice-copy">
+              <strong>Connect to your local daemon</strong>
+              <p>Enter the bearer token you started <code>lpd</code> with. It stays in this browser tab and is never written to the workspace.</p>
+            </div>
+            <form class="token-form" id="token-form">
+              <label class="sr-only" for="token-input">Daemon bearer token</label>
+              <input id="token-input" name="token" type="password" autocomplete="off" placeholder="Bearer token" />
+              <button class="secondary-button" type="submit">Connect</button>
+            </form>
+          </section>
+
+          <section class="metrics-grid" aria-label="Studio status">
+            <article class="metric-card">
+              <div class="metric-header"><span>Current stage</span><span class="metric-icon purple" aria-hidden="true">◈</span></div>
+              <strong class="metric-value">S0 <span>·</span> Spark</strong>
+              <p class="metric-foot muted">Start with an idea</p>
+            </article>
+            <article class="metric-card">
+              <div class="metric-header"><span>Human decisions</span><span class="metric-icon amber" aria-hidden="true">✦</span></div>
+              <strong class="metric-value" id="decision-count">0</strong>
+              <p class="metric-foot muted">Nothing waiting for you</p>
+            </article>
+            <article class="metric-card">
+              <div class="metric-header"><span>Daemon</span><span class="metric-icon green" aria-hidden="true">⌁</span></div>
+              <strong class="metric-value" id="daemon-version">Offline</strong>
+              <p class="metric-foot muted" id="daemon-platform">Start lpd to begin</p>
+            </article>
+            <article class="metric-card">
+              <div class="metric-header"><span>Spend today</span><span class="metric-icon blue" aria-hidden="true">$</span></div>
+              <strong class="metric-value">$0.00</strong>
+              <p class="metric-foot muted">No hosted calls</p>
+            </article>
+          </section>
+
+          <section class="content-grid">
+            <article class="panel next-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">NEXT UP</p>
+                  <h2>Make the first decision</h2>
+                </div>
+                <span class="panel-count">01</span>
+              </div>
+              <div class="next-step">
+                <div class="step-number">1</div>
+                <div class="step-copy">
+                  <strong>Tell us what you want to make</strong>
+                  <p class="muted">A short idea is enough. The studio will help turn it into a finishable game.</p>
+                  <button class="text-button" type="button" id="idea-button">Start idea intake <span aria-hidden="true">→</span></button>
+                </div>
+              </div>
+              <div class="quiet-note"><span aria-hidden="true">ⓘ</span> Humans choose the direction. The studio handles the busywork.</div>
+            </article>
+
+            <article class="panel progress-panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">PRODUCTION</p>
+                  <h2>Path to a playable slice</h2>
+                </div>
+                <button class="ghost-button" type="button">View guide <span aria-hidden="true">→</span></button>
+              </div>
+              <ol class="stage-list">
+                <li class="stage current"><span class="stage-marker">1</span><span><strong>Spark</strong><small>Find the game inside the idea</small></span><em>Now</em></li>
+                <li class="stage"><span class="stage-marker">2</span><span><strong>Concept</strong><small>Choose a clear direction</small></span><em>Next</em></li>
+                <li class="stage"><span class="stage-marker">3</span><span><strong>Prototype</strong><small>Prove the core loop is fun</small></span><em>Later</em></li>
+                <li class="stage"><span class="stage-marker">4</span><span><strong>Vertical slice</strong><small>Make one piece feel finished</small></span><em>Later</em></li>
+              </ol>
+            </article>
+          </section>
+
+          <section class="panel activity-panel" id="activity">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">RECENT ACTIVITY</p>
+                <h2>Nothing has happened yet</h2>
+              </div>
+              <span class="live-label"><span class="status-dot"></span> Live</span>
+            </div>
+            <div class="empty-state">
+              <div class="empty-art" aria-hidden="true"><span>✦</span></div>
+              <p>When your agent starts working, its jobs, decisions, and evidence will appear here.</p>
+            </div>
+          </section>
+
+          <section class="content-grid kernel-panels" aria-label="Kernel status">
+            <article class="panel resume-panel" id="project-resume">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">PROJECT MEMORY</p>
+                  <h2>Resume brief</h2>
+                </div>
+                <span class="panel-count" id="resume-budget">—</span>
+              </div>
+              <div class="resume-summary">
+                <div><span class="resume-label">Stage</span><strong id="resume-stage">Waiting for daemon</strong></div>
+                <div><span class="resume-label">Human decisions</span><strong id="resume-decisions-count">—</strong></div>
+              </div>
+              <p class="muted resume-status" id="resume-status">Connect to load the project memory brief.</p>
+              <div class="resume-columns">
+                <div>
+                  <p class="eyebrow">NEXT ACTIONS</p>
+                  <ul class="compact-list" id="resume-next-actions"><li>Connect to lpd first.</li></ul>
+                </div>
+                <div>
+                  <p class="eyebrow">GATE GAPS</p>
+                  <ul class="compact-list" id="resume-gate-gaps"><li>Not loaded.</li></ul>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel security-panel" id="security">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">SECURITY &amp; CONTROL</p>
+                  <h2>Human authority stays local</h2>
+                </div>
+                <span class="live-label"><span class="status-dot"></span> Main process</span>
+              </div>
+              <dl class="security-list">
+                <div><dt>Agent approval route</dt><dd>Unavailable</dd></div>
+                <div><dt>Renderer signer access</dt><dd>Unavailable</dd></div>
+                <div><dt>Ledger verification</dt><dd id="security-ledger-status">Use lp doctor</dd></div>
+                <div><dt>Human Channel</dt><dd id="security-human-status">Electron shell required</dd></div>
+              </dl>
+              <div class="security-control">
+                <p class="muted" id="security-human-note">Enrollment is available from the Electron shell only.</p>
+                <button class="secondary-button" id="human-channel-enroll" type="button" disabled>Enroll this device</button>
+              </div>
+              <p class="muted security-note">Approvals require the Electron main process and an explicitly enrolled device key. Agents can request work but cannot grant it.</p>
+            </article>
+          </section>
+        </main>
+
+        <aside class="inspector" aria-label="Inspector">
+          <div class="inspector-header"><strong>Workspace</strong><button class="icon-button" type="button" aria-label="More workspace options">•••</button></div>
+          <div class="inspector-section">
+            <p class="eyebrow">DAEMON INFO</p>
+            <dl class="info-list">
+              <div><dt>Status</dt><dd id="inspector-status">Offline</dd></div>
+              <div><dt>Service</dt><dd id="inspector-service">lpd</dd></div>
+              <div><dt>Version</dt><dd id="inspector-version">—</dd></div>
+              <div><dt>Platform</dt><dd id="inspector-platform">—</dd></div>
+            </dl>
+          </div>
+          <div class="inspector-section quick-actions">
+            <p class="eyebrow">QUICK ACTIONS</p>
+            <button class="quick-action" type="button" id="quick-connect"><span>⌁</span> Test connection <b>↗</b></button>
+            <button class="quick-action" type="button" id="quick-docs"><span>?</span> Read the basics <b>↗</b></button>
+          </div>
+          <div class="inspector-tip">
+            <span class="tip-icon" aria-hidden="true">✧</span>
+            <div><strong>Small steps make good games</strong><p>Start with the smallest playable version. Quality grows from there.</p></div>
+          </div>
+        </aside>
+      </div>
+
+      <footer class="statusbar">
+        <span><span class="status-dot" id="footer-dot"></span><span id="footer-status">Daemon offline</span></span>
+        <span>Mode A · External agent ready</span>
+        <span>Phase 0 · Walking skeleton</span>
+        <span class="statusbar-spacer"></span>
+        <span>⌘K Command palette</span>
+      </footer>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

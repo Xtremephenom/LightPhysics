@@ -1,0 +1,17 @@
+{
+  "name": "@lightphysics/warden",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "node --experimental-strip-types --test src/policy.test.ts src/session.test.ts src/secrets.test.ts src/human-channel.test.ts src/human-evidence.test.ts src/human-device-key.test.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "typescript": "5.9.3"
+  }
+}

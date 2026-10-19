@@ -1,0 +1,39 @@
+{
+  "criterion": "P0-E8",
+  "status": "DEMONSTRATED",
+  "command": "corepack pnpm run db-spike",
+  "commit": "78212f2",
+  "machine_profile": "windows-node-24.18.0",
+  "platform": "win32-x64",
+  "runtime": "v24.18.0",
+  "sqlite": "node:sqlite",
+  "journal_mode": "wal",
+  "fts5": {
+    "query": "light",
+    "match": "light beam lighthouse"
+  },
+  "vector": {
+    "status": "QUALIFIED",
+    "mode": "SQLITE_VEC",
+    "engine": "sqlite-vec",
+    "version": "v0.1.9",
+    "nearest": "north",
+    "nearest_rowid": "1",
+    "distance": 0.141421377658844
+  },
+  "docker_linux_x64": {
+    "status": "QUALIFIED",
+    "profile": "Docker Desktop desktop-linux test container",
+    "runtime": "v24.18.0",
+    "vector": {
+      "status": "QUALIFIED",
+      "mode": "SQLITE_VEC",
+      "engine": "sqlite-vec",
+      "version": "v0.1.9",
+      "nearest": "north",
+      "nearest_rowid": "1",
+      "distance": 0.141421377658844
+    }
+  },
+  "notes": "WAL, FTS5, and sqlite-vec v0.1.9 KNN are measured on Windows x64 and in the Linux x64 Docker test container through Node's built-in node:sqlite binding. Native Linux host, non-x64, and unsupported package/platform combinations remain outside this evidence and retain an explicit UNQUALIFIED/FALLBACK result; deterministic classification and fallback tests run offline."
+}

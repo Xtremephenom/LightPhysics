@@ -1,0 +1,17 @@
+{
+  "name": "@lightphysics/runner",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "node --experimental-strip-types --test src/index.test.ts src/supervisor.test.ts src/safe-points.test.ts src/crash-recovery.integration.test.ts src/posix-process-tree.integration.test.ts src/real-os-qualification.integration.test.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.5",
+    "typescript": "5.9.3"
+  }
+}

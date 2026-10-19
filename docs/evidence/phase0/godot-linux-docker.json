@@ -1,0 +1,72 @@
+{
+  "criterion": "P0-E7",
+  "status": "PARTIAL",
+  "date": "2026-10-19",
+  "commit": "ff45386",
+  "machine_profile": "docker-linux-x64-node-24.18.0",
+  "platform": "linux-x64",
+  "container": {
+    "base_image": "node:24.18.0-bookworm-slim",
+    "digest": "sha256:d45d78e7929b46875bbd4e29bea672d5bc48186c6c3588306521c815e78352d6",
+    "network": "bridge during opt-in artifact fetch and dependency setup",
+    "runtime_dependencies": "Debian runtime libraries installed in the temporary qualification container"
+  },
+  "runtime": "v24.18.0",
+  "artifact": {
+    "tool": "godot",
+    "version": "4.7.2",
+    "component": "editor",
+    "lock_entry": "tools.lock.json#tools.godot.editor.linux-x64",
+    "url": "https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip",
+    "sha256": "cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4",
+    "archive_source": "remote HTTPS fetch",
+    "archive_sha256_checked_before_parse_or_extraction": true,
+    "archive_limit_bytes": 268435456,
+    "entry_limit_bytes": 268435456,
+    "total_limit_bytes": 805306368
+  },
+  "installer": {
+    "file_count": 1,
+    "directory_count": 0,
+    "executable_entry_mode_preserved": true,
+    "extracted_file": "Godot_v4.7.2-stable_linux.x86_64",
+    "extracted_file_bytes": 146414384,
+    "temporary_destination": "<container-temporary-directory>/tools/godot; cleaned with the container"
+  },
+  "godot_smoke": {
+    "status": "PASS",
+    "command": "node scripts/godot-smoke.mjs --godot <container-temporary-directory>/tools/godot/Godot_v4.7.2-stable_linux.x86_64 --timeout-ms 30000",
+    "timeout_ms": 30000,
+    "max_output_bytes": 65536,
+    "marker": "LIGHTPHYSICS_GODOT_SMOKE_PASS",
+    "results": [
+      {
+        "mode": "boot",
+        "ok": true,
+        "code": 0,
+        "classification": "boot-marker",
+        "message": "headless boot exited 0 and emitted the success marker"
+      },
+      {
+        "mode": "check-valid",
+        "ok": true,
+        "code": 0,
+        "classification": "check-only-success",
+        "message": "valid script --check-only exited 0"
+      },
+      {
+        "mode": "check-invalid",
+        "ok": true,
+        "code": 1,
+        "classification": "check-only-failure",
+        "message": "invalid script --check-only exited nonzero (1)"
+      }
+    ]
+  },
+  "qualification": "QUALIFIED_FOR_PINNED_LINUX_X64_DOCKER_EDITOR_FIXTURE_SMOKE_ONLY",
+  "notes": [
+    "The run used the Dockerfile's pinned Node base-image digest and a temporary copied checkout; no host tool directory or archive was retained.",
+    "The installer preserved the archive executable bit and the extracted Godot binary passed an executable-bit check before the smoke runner started it.",
+    "No native Linux host, rendering, gameplay, performance, packaging, export-template, or cross-platform Godot qualification is claimed."
+  ]
+}

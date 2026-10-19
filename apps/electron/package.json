@@ -1,0 +1,14 @@
+{
+  "name": "@lightphysics/electron",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "src/main.mjs",
+  "scripts": {
+    "start": "electron src/main.mjs",
+    "test": "node --experimental-strip-types --test test/*.test.mjs"
+  },
+  "devDependencies": {
+    "electron": "44.9.0"
+  }
+}

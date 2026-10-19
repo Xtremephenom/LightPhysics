@@ -1,0 +1,51 @@
+{
+  "criterion": "P0-E3",
+  "status": "PARTIAL",
+  "date": "2026-10-19",
+  "commit": "977ce1d",
+  "machine_profile": "docker-linux-x64-node-24.18.0",
+  "platform": "linux-x64",
+  "container": {
+    "base_image": "node:24.18.0-bookworm-slim",
+    "digest": "sha256:d45d78e7929b46875bbd4e29bea672d5bc48186c6c3588306521c815e78352d6",
+    "network": "bridge during opt-in artifact fetch and dependency setup",
+    "runtime_dependencies": "Debian runtime libraries plus xz-utils installed in the temporary qualification container"
+  },
+  "runtime": "v24.18.0",
+  "artifact": {
+    "tool": "blender",
+    "version": "5.2.2",
+    "lock_entry": "tools.lock.json#tools.blender.platforms.linux-x64",
+    "url": "https://download.blender.org/release/Blender5.2/blender-5.2.2-linux-x64.tar.xz",
+    "sha256": "84098912789dc450e95697c4184fb8a90acbe5111c2ba4aede3fecb57806a168",
+    "archive_source": "remote HTTPS fetch",
+    "archive_sha256_checked_before_parse_or_extraction": true,
+    "archive_limit_bytes": 1073741824,
+    "max_entries": 65536,
+    "entry_limit_bytes": 1073741824,
+    "total_limit_bytes": 2147483648
+  },
+  "installer": {
+    "file_count": 5672,
+    "directory_count": 875,
+    "extracted_executable": "blender-5.2.2-linux-x64/blender",
+    "gnu_long_name_metadata": true,
+    "safe_relative_symlinks": true,
+    "temporary_destination": "<container-temporary-directory>/tools/blender; cleaned with the container"
+  },
+  "runtime_smoke": {
+    "status": "PASS",
+    "command": "blender --background --factory-startup --disable-autoexec --python-expr <marker script>",
+    "exit_code": 0,
+    "signal": null,
+    "marker": "LIGHTPHYSICS_BLENDER_SMOKE_PASS",
+    "stdout_tail": "LIGHTPHYSICS_BLENDER_SMOKE_PASS\nBlender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:34:58)\nBlender quit",
+    "stderr": ""
+  },
+  "qualification": "QUALIFIED_FOR_PINNED_LINUX_X64_DOCKER_BLENDER_BACKGROUND_SMOKE_ONLY",
+  "notes": [
+    "The run used the Dockerfile's pinned Node base-image digest and a temporary copied checkout; no host tool directory or archive was retained.",
+    "The safe TAR extractor consumed GNU long-name records, preserved executable bits, and created only validated relative symlinks after regular files were staged.",
+    "This proves the Linux x64 Docker background smoke only; native Linux, rendering, add-ons, Python workflows, packaging, and other profiles remain outside the claim."
+  ]
+}

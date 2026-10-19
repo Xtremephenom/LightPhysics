@@ -1,0 +1,40 @@
+{
+  "criterion": "P0-E3",
+  "status": "PARTIAL",
+  "date": "2026-10-19",
+  "commit": "5f1080b",
+  "machine_profile": "windows-node-24.18.0",
+  "platform": "win32-x64",
+  "runtime": "v24.18.0",
+  "artifact": {
+    "tool": "uv",
+    "version": "0.13.1",
+    "lock_entry": "tools.lock.json#tools.uv.platforms.win-x64",
+    "url": "https://github.com/astral-sh/uv/releases/download/0.13.1/uv-x86_64-pc-windows-msvc.zip",
+    "sha256": "3b2661a463a5baea7f5076ea2b25ab71d77f36a6c0d809e5350651792f80a672",
+    "archive_source": "remote HTTPS fetch",
+    "archive_sha256_checked_before_parse_or_extraction": true,
+    "archive_limit_bytes": 134217728,
+    "max_entries": 4096,
+    "entry_limit_bytes": 268435456,
+    "total_limit_bytes": 536870912
+  },
+  "installer": {
+    "file_count": 3,
+    "directory_count": 0,
+    "extracted_executable": "uv.exe",
+    "temporary_destination": "<external-temporary-directory>/uv; cleaned after the smoke"
+  },
+  "runtime_smoke": {
+    "status": "PASS",
+    "command": "uv.exe --version",
+    "stdout": "uv 0.13.1 (62faed335 2026-10-13 x86_64-pc-windows-msvc)",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "qualification": "QUALIFIED_FOR_PINNED_WINDOWS_X64_UV_BINARY_VERSION_SMOKE_ONLY",
+  "notes": [
+    "The archive SHA-256 matched before ZIP parsing/extraction and the destination was removed after the smoke.",
+    "This proves artifact installation and the binary version command only; it does not qualify Python environment resolution, Linux beyond the recorded Docker smoke, or other profiles."
+  ]
+}

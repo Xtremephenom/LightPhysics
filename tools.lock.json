@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema": 1,
+  "status": "bootstrap-partial",
+  "generated_at": "2026-10-18",
+  "notes": [
+    "Phase 0 records the requested runtime pins and honest placeholders.",
+    "UNKNOWN URLs and hashes are not installable and must be replaced from vendor-published checksums before engine/tool installation.",
+    "The offline verifier reads tools.<tool>.platforms.<platform> (or a component map), checks the tool version plus URL and sha256, and only permits a local archive override without contacting the network; UNKNOWN values remain refused.",
+    "FFmpeg uses the exact BtbN FFmpeg 9.0.2 release-branch LGPL static builds linked from the official FFmpeg download page; the build variant and checksum source are recorded in research entry R-013 and do not settle the project's own license decision."
+  ],
+  "runtimes": {
+    "node": {
+      "version": "24.18.0",
+      "source": ".node-version",
+      "status": "pinned"
+    },
+    "python": {
+      "version": "3.12.0",
+      "source": ".python-version",
+      "status": "local-observation"
+    },
+    "pnpm": {
+      "version": "12.14.0",
+      "source": "package.json#packageManager",
+      "status": "pinned"
+    }
+  },
+  "tools": {
+    "node": {
+      "version": "24.18.0",
+      "status": "version-pinned; archive-not-verified",
+      "platforms": {
+        "linux-x64": {
+          "url": "UNKNOWN",
+          "sha256": "UNKNOWN",
+          "verified_at": null,
+          "ledger": "R-001"
+        },
+        "win-x64": {
+          "url": "UNKNOWN",
+          "sha256": "UNKNOWN",
+          "verified_at": null,
+          "ledger": "R-001"
+        }
+      }
+    },
+    "uv": {
+      "version": "0.13.1",
+      "status": "version-pinned; archive-verified; runtime-qualified-on-win-x64-and-linux-x64-docker; other-profiles-unqualified",
+      "platforms": {
+        "linux-x64": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.13.1/uv-x86_64-unknown-linux-gnu.tar.gz",
+          "sha256": "eadd9d27c134ab5ac1ffd4473b97a741407f3ea238288f03121fc4deddf90220",
+          "verified_at": "2026-10-19",
+          "ledger": "R-006"
+        },
+        "win-x64": {
+          "url": "https://github.com/astral-sh/uv/releases/download/0.13.1/uv-x86_64-pc-windows-msvc.zip",
+          "sha256": "3b2661a463a5baea7f5076ea2b25ab71d77f36a6c0d809e5350651792f80a672",
+          "verified_at": "2026-10-19",
+          "ledger": "R-006"
+        }
+      }
+    },
+    "godot": {
+      "version": "4.7.2",
+      "status": "version-pinned; archive-verified; runtime-qualified-on-win-x64-and-linux-x64-docker; other-profiles-unqualified",
+      "editor": {
+        "linux-x64": {
+          "url": "https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip",
+          "sha256": "cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4",
+          "verified_at": "2026-10-19",
+          "ledger": "R-007"
+        },
+        "win-x64": {
+          "url": "https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_win64.exe.zip",
+          "sha256": "731980f9608d61333e5baf54a2ef17210acc7a538446c0cb9969f002aca1e953",
+          "verified_at": "2026-10-19",
+          "ledger": "R-007"
+        }
+      },
+      "export_templates": {
+        "any": {
+          "url": "https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_export_templates.tpz",
+          "sha256": "f298490b8d44d934be425a5a65a51bf15f422428b229a06a6e11d9ffea248011",
+          "verified_at": "2026-10-19",
+          "ledger": "R-007"
+        }
+      }
+    },
+    "blender": {
+      "version": "5.2.2",
+      "status": "version-pinned; archive-verified; runtime-qualified-on-win-x64-and-linux-x64-docker; other-profiles-unqualified",
+      "platforms": {
+        "linux-x64": {
+          "url": "https://download.blender.org/release/Blender5.2/blender-5.2.2-linux-x64.tar.xz",
+          "sha256": "84098912789dc450e95697c4184fb8a90acbe5111c2ba4aede3fecb57806a168",
+          "verified_at": "2026-10-19",
+          "ledger": "R-008"
+        },
+        "win-x64": {
+          "url": "https://download.blender.org/release/Blender5.2/blender-5.2.2-windows-x64.zip",
+          "sha256": "3849d17a682cba006075aaa3f3597ecb5c9c30ec31035b2e092c53e40679b535",
+          "verified_at": "2026-10-19",
+          "ledger": "R-008"
+        }
+      }
+    },
+    "ffmpeg": {
+      "version": "9.0.2",
+      "build": "n9.0.2-28-g669f5ab083",
+      "variant": "lgpl-static",
+      "status": "version-pinned; archive-verified; runtime-qualified-on-win-x64-and-linux-x64-docker; other-profiles-unqualified",
+      "platforms": {
+        "linux-x64": {
+          "version": "n9.0.2-28-g669f5ab083",
+          "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-10-18-13-01/ffmpeg-n9.0.2-28-g669f5ab083-linux64-lgpl-9.0.tar.xz",
+          "sha256": "b2ee4166aa1f068ac261cbdb637667f789c58f3556b463c41221ca8d971ac793",
+          "archive_format": "tar.xz",
+          "archive_root": "ffmpeg-n9.0.2-28-g669f5ab083-linux64-lgpl-9.0",
+          "binary": "bin/ffmpeg",
+          "verified_at": "2026-10-19",
+          "ledger": "R-013"
+        },
+        "win-x64": {
+          "version": "n9.0.2-28-g669f5ab083",
+          "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-10-18-13-01/ffmpeg-n9.0.2-28-g669f5ab083-win64-lgpl-9.0.zip",
+          "sha256": "7f4cbda0ece7721488eeebf2fa69762d7388bca69450fd13045b408744457b14",
+          "archive_format": "zip",
+          "archive_root": "ffmpeg-n9.0.2-28-g669f5ab083-win64-lgpl-9.0",
+          "binary": "bin/ffmpeg.exe",
+          "verified_at": "2026-10-19",
+          "ledger": "R-013"
+        }
+      }
+    }
+  },
+  "docker": {
+    "base_image": {
+      "image": "node:24.18.0-bookworm-slim",
+      "digest": "sha256:d45d78e7929b46875bbd4e29bea672d5bc48186c6c3588306521c815e78352d6",
+      "platform": "linux/amd64",
+      "verified_at": "2026-10-18",
+      "ledger": "R-001"
+    }
+  }
+}

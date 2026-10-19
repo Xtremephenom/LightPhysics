@@ -1,0 +1,10 @@
+# Research backlog
+
+Each item remains open until a primary source or a measured run is recorded in a Ledger entry. The fallback in force is intentionally conservative.
+
+| Ledger | Question | Decision blocked | Ready-to-run queries | Fallback in force |
+| --- | --- | --- | --- | --- |
+| R-001 | Which unmeasured target profiles have local xz for tar.xz? | `tools.lock.json`, Docker tool bootstrap | The selected FFmpeg x64 artifacts and checksum strategy are resolved in R-013; measure another profile only if it becomes an explicit target | Keep unmeasured profiles outside the claim; tar.xz remains conditional on local xz and no broader tool work is started |
+| R-001 | Which verified Godot/Blender/uv archives run successfully on the clean Linux and Windows profiles? | Docker engine test, `fixtures/mini-game`, tool qualification | Godot Windows x64/Linux x64 Docker, uv Windows/Linux x64 Docker, and Blender Windows/Linux x64 Docker smokes pass; run remaining target profiles and broader engine workflows | Keep uv/Blender outside the measured binary profiles and Godot limited to the measured Windows x64/Linux x64 Docker fixture smokes |
+| R-010 | Does sqlite-vec v0.1.9 remain loadable on native Linux hosts and non-x64 target profiles? | ADR-0017 and the final platform boundary | Windows x64 and the Linux x64 Docker test container are measured; repeat on any shipped native/non-x64 profile before widening the claim | Keep x64 qualification scoped to the measured profiles and retain the deterministic fallback elsewhere |
+| R-011 | Which Electron packaging target, code-signing/installer path, and token persistence policy should Phase 0 qualify? | ADR-0003, desktop distribution, and secret storage | Measure an unpackaged-to-packaged build on the target profiles; document signing and safeStorage behavior before persisting credentials | Keep the un-packaged loopback shell and in-memory bearer tokens; make no packaging or Linux secret-store claim |

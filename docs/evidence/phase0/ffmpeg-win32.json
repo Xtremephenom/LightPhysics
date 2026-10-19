@@ -1,0 +1,49 @@
+{
+  "criterion": "P0-E3",
+  "status": "PASS",
+  "date": "2026-10-19",
+  "commit": "2b4b236",
+  "machine_profile": "windows-node-24.18.0",
+  "platform": "win32-x64",
+  "runtime": "v24.18.0",
+  "artifact": {
+    "tool": "ffmpeg",
+    "version": "9.0.2",
+    "build": "n9.0.2-28-g669f5ab083",
+    "variant": "lgpl-static",
+    "lock_entry": "tools.lock.json#tools.ffmpeg.platforms.win-x64",
+    "url": "https://github.com/BtbN/FFmpeg-Builds/releases/download/autobuild-2026-10-18-13-01/ffmpeg-n9.0.2-28-g669f5ab083-win64-lgpl-9.0.zip",
+    "sha256": "7f4cbda0ece7721488eeebf2fa69762d7388bca69450fd13045b408744457b14",
+    "archive_format": "zip",
+    "archive_root": "ffmpeg-n9.0.2-28-g669f5ab083-win64-lgpl-9.0",
+    "binary": "bin/ffmpeg.exe",
+    "temporary_destination": "<temporary-path>; cleaned"
+  },
+  "installer": {
+    "status": "PASS",
+    "command": "node scripts/install-ffmpeg.mjs --platform win-x64 --destination <temporary-path>/install",
+    "sha256_checked_before_parse_or_extraction": true,
+    "limits": {
+      "max_archive_bytes": 268435456,
+      "max_entries": 4096,
+      "max_entry_uncompressed_bytes": 536870912,
+      "max_total_uncompressed_bytes": 1073741824
+    }
+  },
+  "ffmpeg_smoke": {
+    "status": "PASS",
+    "command": "node scripts/ffmpeg-smoke.mjs --ffmpeg <temporary-path>/install/<archive-root>/bin/ffmpeg.exe --timeout-ms 30000",
+    "timeout_ms": 30000,
+    "version": "9.0.2",
+    "version_classification": "version-match",
+    "processing_classification": "processing-success",
+    "expected_exit": "zero",
+    "message": "FFmpeg processed the deterministic lavfi color frame into the null muxer"
+  },
+  "qualification": "QUALIFIED_FOR_PINNED_WINDOWS_X64_LGPL_STATIC_VERSION_AND_LAVFI_SMOKE_ONLY",
+  "notes": [
+    "The checksum is the vendor-published value in the release-tagged BtbN checksums.sha256 asset.",
+    "The selected LGPL static build is scoped to this binary/version smoke; FFmpeg upstream terms do not choose the LightPhysics project license.",
+    "No Linux, native non-x64, codec-quality, rendering, packaging, or other FFmpeg profile is claimed."
+  ]
+}

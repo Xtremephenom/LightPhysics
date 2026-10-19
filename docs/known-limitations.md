@@ -1,0 +1,12 @@
+# Known limitations — Phase 0
+
+- The repository is an early walking skeleton; no production package or distributable desktop app exists yet.
+- The Phase 0 `lpd`/`lp` workspace wrappers, Core API walking skeleton, and browser-served Studio Floor are present; Electron packaging, engine bridges, providers, and model workers are intentionally absent.
+- `corepack pnpm run gui-smoke` is a deterministic browser-resource prerequisite: it fetches the Studio Floor assets and checks HTTP/RPC contracts. A separate local `corepack pnpm run test:e2e` and the network-disabled Docker test container execute one real Playwright browser flow each; Electron packaging/runtime, visual snapshots, and accessibility audits remain unrun.
+- The offline root test uses Node 24's built-in runner on a TypeScript file. Existing workspace packages use the pinned Vitest dependency; the root config is reserved for the first root package suite.
+- The pnpm lockfile covers the current workspace's small TypeScript/test dependency graph; it is not a completed dependency-license audit.
+- uv is hash-pinned and qualified only for Windows x64 and Linux x64 Docker binary smokes; Blender is hash-pinned and qualified only for Windows x64 and Linux x64 Docker background smokes; Godot 4.7.2 is hash-pinned and its editor boot/check-only plus separately scoped headless project-import smokes are qualified only on Windows x64 and Linux x64 Docker; FFmpeg 9.0.2 is hash-pinned and its LGPL static version/lavfi smokes are qualified only on Windows x64 and Linux x64 Docker; the Docker bootstrap still runs in check-only mode for the remaining UNKNOWN entries.
+- The Docker runtime is a Phase 0 service image, not a production release: it requires an operator-supplied `LP_TOKEN`, publishes only through an explicitly loopback host mapping, and contains no engine/tool payloads beyond the audited base packages.
+- `scripts/footprint.mjs` records host-specific cold-start and idle working-set observations while deliberately reporting `NOT_QUALIFIED`; the Windows report has no portable RSS value.
+- The project license is MIT, but the dependency/tool/model attribution audit is not a commercial-clearance opinion; database binding, engine flags, and remaining external tool research remain scoped by the Research Ledger and backlog.
+- The committed-state rebuild proof requires a clean checkout because `scripts/verify-rebuild.sh` checks repository state before cloning; the current proof is recorded from committed revision `bbacc39`.

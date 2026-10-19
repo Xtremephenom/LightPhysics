@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "platform": {
+    "os": "win32",
+    "arch": "x64",
+    "release": "10.0.26200"
+  },
+  "runtime": {
+    "name": "node",
+    "version": "v24.18.0"
+  },
+  "command": {
+    "executable": "node",
+    "args": [
+      "--experimental-strip-types",
+      "apps/lpd/src/main.ts"
+    ],
+    "working_directory": "workspace-root",
+    "wrapper": "existing lpd executable wrapper",
+    "environment": {
+      "LP_BIND": "127.0.0.1",
+      "LP_IN_CONTAINER": "0",
+      "LP_LOG_FORMAT": "json",
+      "LP_LOG_LEVEL": "error",
+      "LP_PORT": "<ephemeral-loopback-port>",
+      "LP_HOME": "<temporary-test-home>",
+      "LP_TOKEN": "[redacted]"
+    }
+  },
+  "listen": {
+    "bind": "127.0.0.1",
+    "port": "ephemeral"
+  },
+  "qualification": {
+    "status": "NOT_QUALIFIED",
+    "architecture_budget_claimed": false,
+    "budget_reference": {
+      "lpd_idle_ram": "<= 250 MB (reference only; not evaluated here)",
+      "lpd_cold_start": "<= 3 s (reference only; not evaluated here)"
+    },
+    "notes": [
+      "Measured values are host-specific observations; this report does not claim the architecture budget is met.",
+      "Cold start is measured from the child spawn request until the existing lpd wrapper reports its loopback listener.",
+      "Idle memory is sampled while the authenticated daemon is listening and receives no workload requests.",
+      "Repeat on the reference hardware/profile before making a qualification decision.",
+      "One or more requested memory metrics were unavailable on this platform; see idle_memory for the measured source and notes."
+    ]
+  },
+  "status": "MEASURED",
+  "measurement": {
+    "cold_start_ms": 296.794,
+    "idle_memory": {
+      "state": "idle",
+      "sample_count": 5,
+      "sample_interval_ms": 100,
+      "window_ms": 400,
+      "rss_bytes": null,
+      "working_set_bytes": {
+        "sample_count": 5,
+        "min_bytes": 73203712,
+        "max_bytes": 73203712,
+        "mean_bytes": 73203712
+      },
+      "source": "tasklist",
+      "notes": [
+        "Windows working set is measured through tasklist; a separate RSS value is not exposed by this portable probe."
+      ]
+    },
+    "readiness": "wrapper-listener-line",
+    "reported_port": "ephemeral-loopback-port"
+  }
+}
