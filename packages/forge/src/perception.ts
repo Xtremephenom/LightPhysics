@@ -1,0 +1,9 @@
+import { z } from "zod";
+
+export const PerceptionSchema = z.object({ summary: z.string(), tags: z.array(z.string()), flags: z.array(z.string()), measured: z.record(z.string(), z.number()), ai_described: z.object({ summary: z.string(), tags: z.array(z.string()) }).optional(), source: z.enum(["local-vision", "byok-vision", "analysis", "none"]) }).strict();
+export type Perception = z.infer<typeof PerceptionSchema>;
+export interface ContactSheetDescriptor { label: string; artifact_id: string; summary: string; }
+export function measuredPerception(measured: Record<string, number>, summary = "Measured values only"): Perception { return { summary, tags: [], flags: [], measured, source: "analysis" }; }
+export function withAiDescription(perception: Perception, description: { summary: string; tags?: string[] }, source: "local-vision" | "byok-vision" = "local-vision"): Perception { return { ...perception, ai_described: { summary: description.summary, tags: description.tags ?? [] }, source }; }
+export function contactSheetDescriptors(artifacts: readonly { id: string; preview?: string }[]): ContactSheetDescriptor[] { return artifacts.map((artifact, index) => ({ label: String.fromCharCode(65 + index), artifact_id: artifact.id, summary: artifact.preview ?? "No AI description available" })); }
+export function completeTextSummary(input: { capability: string; artifacts: readonly { id: string; perception?: Perception }[]; measured?: Record<string, number> }): string { const lines = [`Capability: ${input.capability}`, `Candidates: ${input.artifacts.length}`]; if (input.measured) lines.push(`Measured: ${Object.entries(input.measured).map(([key, value]) => `${key}=${value}`).join(", ")}`); for (const artifact of input.artifacts) { const p = artifact.perception; lines.push(`${artifact.id}: ${p?.summary ?? "No perception available"}`); if (p?.ai_described) lines.push(`  AI-described (not measured): ${p.ai_described.summary}`); } return lines.join("\n"); }

@@ -224,6 +224,9 @@ importers:
       '@lightphysics/core-api':
         specifier: workspace:*
         version: link:../../packages/core-api
+      '@lightphysics/forge':
+        specifier: workspace:*
+        version: link:../../packages/forge
       '@lightphysics/ledger':
         specifier: workspace:*
         version: link:../../packages/ledger
@@ -283,6 +286,22 @@ importers:
       '@lightphysics/schemas':
         specifier: workspace:*
         version: link:../schemas
+      zod:
+        specifier: 3.25.76
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: 22.20.5
+        version: 22.20.5
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: 2.1.9
+        version: 2.1.9(@types/node@22.20.5)
+
+  packages/forge:
+    dependencies:
       zod:
         specifier: 3.25.76
         version: 3.25.76

@@ -1,129 +1,130 @@
 # BUILD_STATE — LightPhysics
-<!-- Rewritten each session; history lives in git. Keep this file short and honest. -->
+<!-- Rewritten for the Phase 2 documentation closure; history lives in git. Keep this file short and honest. -->
 
-**Phase:** 1 — Kernel (formally closed; Warden slice 1d)
-**Session:** 19
+**Phase:** 2 — Forge (offline/mock surfaces formally closed; real-model qualification open)
+**Session:** Phase 2 documentation closure
 **Date:** 2026-10-20
-**HEAD:** inspect with `git rev-parse --short HEAD`; code/rebuild checkpoint `71e2fbf`
+**HEAD:** inspect with `git rev-parse --short HEAD`; implementation commits through `9bed4aa`, documentation closure committed
 **Tree:** clean after this state file is committed
 
-**Baseline `make test`:** green — 57 passed / 0 failed / 0 skipped (root tests); 185 workspace tests passed / 0 failed / 1 skipped, the explicit Windows-only POSIX qualification skip. The host uses the equivalent `corepack pnpm run test` because native `make` is unavailable. Node `24.18.0`, pnpm `12.14.0`, Electron `44.9.0`.
+**Baseline `make test`:** green — equivalent `corepack pnpm run test`; 289 passed / 0 failed / 1 skipped (59 root tests; 230 workspace tests; Windows-only POSIX process-tree qualification skip). Node 24.18.0, pnpm 12.14.0.
 
-**Docker status:** `scripts/verify-rebuild.sh 1` passed from clean checkout `71e2fbf`; fresh clone, native and network-disabled Linux tests, Playwright, Docker test/runtime builds, POSIX process-tree qualification, and authenticated runtime smoke all passed. Current Phase 1 implementation criteria are complete for the implemented surfaces; the Owner has formally authorized closure with the documented interaction, packaging, platform, and footprint limits explicitly deferred and unqualified.
+**Docker status:** PASS — `scripts/verify-rebuild.sh 2` completed from a clean
+checkout: fresh clone, frozen install, native and network-disabled tests,
+Playwright, Docker test/runtime builds, and authenticated runtime smoke. See
+`docs/evidence/phase2/verify-rebuild.md`.
 
 ## 1. Phase goal & exit criteria
 
-Phase 1 turns the walking skeleton into a trustworthy substrate: persistent Ledger, Warden permissions/sessions/secrets, a Human Channel that agents cannot reach, resumable Runner jobs, Resource Governor, git-backed project Memory, and the Studio Floor security boundary. No creative models or MCP surface are in scope.
+The offline/mock Forge surface is implemented and tested. Status below is scoped
+to repository fixtures and injected seams; it does not qualify a real model,
+hosted vendor, GPU, or Owner machine.
 
 | ID | Criterion | Status | Evidence |
-|----|-----------|--------|----------|
-| P1-E1 / 1a | Core schemas, typed errors, idempotency, events, clients, and goldens | demonstrated for the current 41 registered schemas and client contracts; later-phase methods remain intentionally absent | `packages/schemas/src/`, `packages/schemas/goldens/core-api.json`, `packages/core-api/src/`, `tests/bootstrap.test.ts` |
-| P1-E2 / 1b | Ledger append-only chain, tamper detection, and CAS | demonstrated for persistent WAL/migrations, typed records, chain verification, tamper cases, CAS dedupe, and path/hash rejection | `packages/ledger/src/index.ts`, `packages/ledger/src/index.test.ts` |
-| P1-E3 / 1c | Runner crash recovery, cancellation, kill-all, safe points, and backup | demonstrated for real crash recovery, safe-point/backup round-trip, daemon quiescence, server-owned Supervisor kill-all, and Warden session revocation after process-tree stop; direct embedded `server.close()` callers must use `server.killAll()` first | `packages/runner/src/`, `apps/cli/src/`, `apps/lpd/src/`, `apps/lpd/src/index.test.ts` |
-| P1-E4 / 1c | Governor decisions under the reference mock profile | demonstrated for admission, queue/deny, priority, accounting, preemption, and downshift | `packages/runner/src/governor.ts`, `packages/runner/src/index.test.ts` |
-| P1-E5 / 1d | Warden permission/session/secret core | demonstrated for the focused in-memory matrix, scopes, expiry/revocation, budgets, secret references, and redaction; broader OS keychain coverage is outside the core package | `packages/warden/src/policy.ts`, `session.ts`, `secrets.ts`, `packages/warden/src/*test.ts` |
-| P1-E6 / 1d | Human Channel enrollment, signing, verification, replay rejection, and negative suite | demonstrated for Warden core, durable state, Electron safeStorage, qualified JS adapter, native runtime smoke, main-only receipts, bounded GUI status/enrollment, native confirmation cancel/confirm tests, and HTTP/WS/CLI/in-process negatives; a real Owner click remains opt-in | `packages/warden/src/`, `apps/electron/src/`, `apps/electron/test/`, `apps/gui/`, `apps/lpd/src/index.test.ts`, `docs/adr/0010-human-channel.md` |
-| P1-E7 / 1e | `lp init`, reindex, rebuildable Memory, approvals, and immutable Style Lock | demonstrated for the current project layout, reindex/rebuild, decisions, and Style Lock tests | `packages/memory/src/index.ts`, `packages/memory/src/index.test.ts`, `apps/cli/src/` |
-| P1-E8 / 1e | Hybrid FTS5/vector retrieval golden | demonstrated with deterministic hashed embeddings and SQLite FTS5/vector tests | `packages/memory/src/index.ts`, `packages/memory/src/index.test.ts` |
-| P1-E9 / 1e | Bounded `project.resume` brief | demonstrated with required continuity fields and the 2,500-token budget test | `packages/memory/src/index.ts`, `packages/memory/src/index.test.ts`, `apps/lpd/src/index.ts` |
-| P1-E10 / 1f | Network/auth hardening | demonstrated for loopback bind, Origin/Host, bearer auth, HTTP/WS rejection, bounded auth-failure limiting, and explicit DNS-rebinding attempts | `apps/lpd/src/index.ts`, `apps/lpd/src/index.test.ts`, `apps/electron/src/security.mjs` |
-| P1-E11 / 1f | Path jail, rollback, backup/restore round-trip | demonstrated for traversal/absolute/UNC/device/symlink bounds, deterministic manifests, restore, and real git/filesystem qualification; POSIX process-tree coverage is skipped on Windows | `packages/runner/src/safe-points.ts`, `packages/runner/src/real-os-qualification.integration.test.ts`, `apps/cli/src/index.test.ts` |
-| P1-E12 / 1a | InProcessClient/RemoteClient parity with identical Ledger outcomes | demonstrated across independent lpd kernels with replay, permissions, cancellation, audit records, and chain verification | `apps/lpd/src/index.test.ts`, `packages/core-api/src/client.test.ts` |
-| P1-E13 / 1f | Studio Floor, Security & Control, and renderer-forged approval rejection | demonstrated for Studio Floor GUI/Electron/Playwright, bounded Security & Control status/enrollment, metadata-only preload, native confirmation cancel/confirm tests, and renderer-forged approval rejection; interactive native modal automation remains opt-in | `apps/gui/`, `tests/e2e/studio-floor.spec.mjs`, `apps/electron/src/`, `apps/electron/test/` |
-| P1-E14 / 1c/1d | Offline contract tests and footprint evidence | demonstrated for current Phase 1 surfaces: native suites, applicable security tests, Linux/Docker rebuild, Playwright, Electron smokes, and focused footprint evidence pass; host footprint remains `NOT_QUALIFIED` and future-phase quarantine/pickle tests have no Phase 1 surface | `scripts/test.mjs`, `scripts/verify-rebuild.sh`, `docs/evidence/phase1/INDEX.md`, `docs/evidence/phase1/verify-rebuild.md` |
+|---|---|---|---|
+| P2-E1 | Catalog schemas/lint, license, hardware, fidelity, qualification | demonstrated for 5 fixture records | `scripts/catalog-lint.mjs`, `catalog/`, `tests/catalog-lint.test.mjs` |
+| P2-E2 | All taxonomy capability schemas and JSON-Schema goldens | demonstrated; 40 IDs | `packages/schemas/src/forge.test.ts`, `packages/schemas/goldens/forge-api.json` |
+| P2-E3 | Mock failures and adapter error mapping | demonstrated for implemented mock/HTTP/ComfyUI/worker seams | `packages/forge/src/adapters.test.ts`, `domain.test.ts` |
+| P2-E4 | Fake ComfyUI/OpenAI-compatible/Python-worker contracts | demonstrated for injected ComfyUI submit/poll/fetch/cancel, recorded OpenAI-compatible response, and Python-worker lifecycle/audio fixture | `packages/forge/src/adapters.test.ts`, `domain.test.ts`, `fixtures/forge/openai-compatible-success.json` |
+| P2-E5 | Ordered fallback, privacy, rewrite/retry, digest-only egress | demonstrated by unit, daemon, and parity tests | `packages/forge/src/routing.test.ts`, `apps/lpd/src/index.test.ts` |
+| P2-E6 | 4 GB Governor admission/swap/downshift/provenance | partial: mock labels, resource normalization, and one-heavy-model scheduling pass; Forge-to-Governor downshift integration is not evidenced | `packages/forge/src/hardware.ts`, `domain.test.ts` |
+| P2-E7 | Estimate/confirmation, caps, actuals, breaker | demonstrated with deterministic spend and Warden/daemon tests; no paid call ran | `packages/forge/src/domain.test.ts`, `apps/lpd/src/index.test.ts` |
+| P2-E8 | Qualification records and honest real-model status | demonstrated for record shape and `NOT_RUN`/`UNQUALIFIED` guards; no real qualification exists | `packages/forge/src/qualification.ts`, `domain.test.ts`, §8 below |
+| P2-E9 | Contact sheets, measured/AI perception, text summary | demonstrated for deterministic contact-sheet descriptors, measured/AI separation, and text summary | `packages/forge/src/perception.ts`, `domain.test.ts` |
+| P2-E10 | Style Lock injection and provenance version | demonstrated for image requests and mock result provenance | `packages/forge/src/style-lock.ts`, `domain.test.ts`, `apps/lpd/src/forge-runtime.ts` |
+| P2-E11 | Acquisition integrity, pickle refusal, disk/range/checksum/license hash | demonstrated for allowed formats, pickle refusal, URL, disk preflight, bounded ranges, size/checksum, resume, and license hash | `packages/forge/src/acquisition.ts`, `domain.test.ts` |
+| P2-E12 | `forge.create`, exploration artifact, recipe/provenance, client parity | demonstrated offline; consult demo and daemon parity pass | `apps/lpd/src/index.test.ts`, `scripts/forge-consult-demo.mjs`, `tests/forge-consult-demo.test.mjs` |
+| P2-E13 | Atlas statuses/sources and model-license verification | partial: every row is conservatively labelled, but primary-source/vendor verification is not present | `docs/research/model-atlas-verified.md`, `docs/research/entries/R-014.md`, `catalog/models/` |
+| P2-E14 | Read-only Models & Providers GUI with mock profile | demonstrated by one Playwright test; labels are offline fixture content | `tests/e2e/studio-floor.spec.mjs`, `apps/gui/index.html`, `docs/evidence/phase2/INDEX.md` |
 
 ## 2. Done this session
 
-- Added `packages/memory` with `lp init`, `project reindex`, `project resume`, deterministic FTS5/vector retrieval, Style Lock, Decision Log, Production Board, path jail, symlink rejection, bounded files, and metadata validation.
-- Added CLI backup quiescence with bounded daemon shutdown, PID cleanup, typed timeout failure, and backup round-trip coverage.
-- Exposed Memory through lpd and the Studio Floor; extended schemas and regenerated `packages/schemas/goldens/core-api.json`.
-- Added the Electron safeStorage key store and main-only Human Channel controller/listener. The renderer/preload has no approval, signer, grant, or signature facade.
-- Added `apps/electron/src/human-channel-adapter.mjs`, a Node-built-in Ed25519 adapter with encrypted bounded enrollment/replay state, plus `test:electron-human-channel` using the real Electron runtime and native `safeStorage`.
-- Added authentication-failure rate limiting in HTTP and WebSocket paths.
-- Added Runner token-revocation callback/interface outcomes and real temporary-directory git/filesystem qualification.
-- Wired the lpd-owned Supervisor kill-all lifecycle to revoke all active Warden sessions after confirmed process-tree stops; signal shutdown uses this path before server close.
-- Added independent in-process/HTTP parity with deterministic Ledger outcomes.
-- Added an explicit lpd DNS-rebinding regression covering hostile Host, Origin, and wrong-port combinations with a valid bearer.
-- Added Electron-main Security & Control enrollment with bounded status/request IPC, native confirmation, safeStorage-backed state, renderer boundary tests, and Studio Floor e2e assertions.
-- Fixed the Docker dependency layer to include the Memory workspace manifest.
-
-### Verification receipts
-
-- `corepack pnpm run test` — PASS: 57 root, 185 workspace, 1 Windows-only POSIX skip.
-- `corepack pnpm run test:electron` — PASS: Electron `44.9.0` rendered the loopback Studio Floor and exited cleanly.
-- `corepack pnpm run test:electron-human-channel` — PASS: real Electron process used native `safeStorage`, qualified the adapter, and restored replay state.
-- Electron Human Channel package tests — 13 passed; Warden tests — 54 passed; Runner — 25 passed/1 skipped; Memory — 7 passed; CLI — 18 passed; lpd — 20 passed; schemas — 11 passed; Core API — 16 passed.
-- `corepack pnpm run test:e2e` — PASS: one Studio Floor test; `corepack pnpm run typecheck` — PASS.
-- `scripts/verify-rebuild.sh 1` — PASS for commit `71e2fbf`; see `docs/evidence/phase1/INDEX.md`.
-- `git diff --check` — PASS before the adapter commit.
+- Audited Phase 2 implementation, §6, current worktree, and available checks.
+- Ran the native/offline receipts listed in `docs/evidence/phase2/INDEX.md`.
+- Added the Phase 2 evidence index and the successful committed rebuild receipt.
+- Replaced the stale Phase 1 state with this Phase 2 state; no application code,
+  package manifest, lockfile, or other pre-existing uncommitted doc was changed.
 
 ## 3. In progress
 
-- Phase 1 is formally closed by the Owner acknowledgement recorded in §11; no known implementation blocker remains for the current surfaces.
-- Optional Owner confirmation, Electron packaging/distribution, non-Windows safeStorage qualification, and hardware footprint qualification remain explicitly deferred and outside the automated claim.
-- Approval methods remain absent from HTTP, WS, CLI, preload, and agent facades by design.
+- Phase 2 offline/mock implementation and rebuild evidence are complete for the
+  recorded scope. P2-E6 and P2-E13 retain the qualification/research limits
+  stated above; they are not silently promoted to real-hardware or vendor proof.
+- Real model/provider research and hardware qualification remain external or
+  unrun work. The ADR, Research Ledger, model-atlas, and evidence closure are
+  committed with this phase.
 
 ## 4. Next 3 actions
 
-1. Preserve the documented deferred qualification limits; do not convert `NOT RUN`/`NOT_QUALIFIED` into release claims.
-2. Preserve the no-approval-facade boundary when adding future capabilities; do not add an agent-facing approval method.
-3. Begin the next roadmap phase only from a clean tree with this close receipt and the `phase1-done` tag present.
+1. Begin Phase 3 only from this clean, tagged checkpoint; preserve the no-approval and qualification boundaries.
+2. Run `make test-hw`/the eventual hardware harness on the Owner machine if real-model qualification is desired; bind any result to its profile and versions.
+3. Reverify R-014 from primary model/vendor sources before widening atlas or commercial claims.
 
 ## 5. Decisions made
 
-- The packaged Electron path uses a Node-built-in Ed25519 adapter with Electron `safeStorage` encrypted key/state files; injected adapters remain explicitly unqualified test seams.
-- Main-process confirmation is the only enrollment authority. Signed approvals are consumed inside the main-process controller and returned only as bounded verified receipts without signatures or private keys.
-- POSIX process-tree qualification remains platform-specific; Windows reports the explicit skip rather than claiming Linux behavior.
-- Phase 1 is formally closed with evidence-backed implementation criteria for the current surfaces; no release/package qualification is implied by the code checkpoint.
+- ADR-0020 — normalized Forge adapters, bounded fixture catalog, typed failures,
+  privacy/egress records, spend gates, and explicit qualification boundary.
+- R-014 — atlas candidates remain `ASSUMED` until primary-source and Owner-run
+  evidence exists; fixture/mock fallback is the safe offline path.
 
 ## 6. Unverified
 
-- Optional real Owner enrollment click in a native dialog.
-- Electron packaging/distribution and native non-Windows safeStorage profiles.
-- Host-specific footprint qualification; the current report remains `NOT_QUALIFIED`.
+- R-014: real model licenses, quality, VRAM/latency, hosted API shapes, and commercial suitability; fallback is deterministic mock/fixture routing.
+- `test:live`: NOT RUN; no hosted vendor, provider key, network qualification, or paid call was used.
+- `test:hw`: NOT RUN; no GPU/NVML/`nvidia-smi` or Owner hardware result is present.
+- Real model/provider research, hardware qualification, and live hosted calls remain unrun; the deterministic fixtures are not real creative-quality evidence.
+- Electron packaging, non-Windows safeStorage, and host-specific footprint remain unqualified from Phase 1.
 
 ## 7. Known defects
 
-- `apps/gui/` remains a static browser shell with token entry and project-resume display; its Security & Control control is intentionally limited to bounded Electron-main status/enrollment requests.
-- Direct embedded callers that invoke `server.close()` without first calling `server.killAll()` can bypass the production revocation lifecycle; the executable signal path is wired correctly.
-- `make` is not installed on the current host; `corepack pnpm run test` is the reproducible local equivalent.
+- Forge hardware labels/scheduling are mock/domain primitives; automatic downshift is not wired through Runner/Governor provenance.
+- `ComfyUIWorkflowAdapter.fetch()` exists, but the run path returns a view URI and no focused fetch contract receipt exists.
+- The Python-worker path is an injected stdio JSON-RPC seam; no real uv-created worker environment or model process is qualified.
+- The Models & Providers screen is a static read-only fixture presentation; it does not load live provider/model records or accept secrets.
+- `scripts/verify-rebuild.sh` requires a clean committed tree and a Docker-capable
+  Linux environment; the Phase 2 receipt records a successful run from the
+  reviewed commit.
 
 ## 8. Opt-in suites
 
 | Suite | Last run | Profile | Result |
-|-------|-----------|---------|--------|
-| `test:electron` | 2026-10-19 | Windows x64, Node 24.18.0, Electron 44.9.0 | PASS — loopback Studio Floor rendered and exited cleanly |
-| `test:electron-human-channel` | 2026-10-19 | Windows x64, Node 24.18.0, Electron 44.9.0 | PASS — native safeStorage adapter and replay persistence |
-| `verify-rebuild 1` | 2026-10-19 | Windows x64 host with Linux/amd64 Docker | PASS — tested commit `71e2fbf`, network-disabled suite, Playwright, runtime smoke |
-| `test:live` | — | network/hosted | NOT RUN |
-| `test:hw` | — | Owner hardware | NOT RUN |
+|---|---|---|---|
+| `corepack pnpm run test:e2e` | 2026-10-20 | Windows x64, Node 24.18.0, Playwright | PASS — 1 Studio Floor/Models test |
+| `corepack pnpm run forge-demo` | 2026-10-20 | Windows x64, Node 24.18.0, mock adapter | PASS — exploration artifact, 3-record verified Ledger chain |
+| `scripts/verify-rebuild.sh 2` | 2026-10-20 | Windows x64 host with Docker Desktop Linux engine | PASS — clean clone/install, native and network-disabled tests, Playwright, Docker builds, runtime smoke |
+| `test:live` | — | hosted/network | NOT RUN |
+| `test:hw` | — | Owner hardware/GPU | NOT RUN |
 
 ## 9. Footprint metrics vs budgets
 
 | Metric | Budget | Measured | Where measured |
-|--------|--------|----------|----------------|
-| lpd idle RAM | ≤ 250 MB | 73,203,712 bytes (~69.8 MiB) | host-specific Phase 0 measurement; not a Phase 1 qualification |
-| GUI idle RAM | ≤ 400 MB | 186,508,902 bytes mean working set | Electron footprint smoke; host-specific and not qualified |
-| `project.resume` | ≤ 2,500 tokens | bounded by unit test | `packages/memory/src/index.test.ts` |
+|---|---|---|---|
+| lpd idle RAM | ≤250 MB | 73,203,712 bytes (~69.8 MiB) | Phase 0 host report; not Phase 2 qualification |
+| GUI idle RAM | ≤400 MB | 186,508,902-byte mean working set | Phase 0 Electron report; host-specific, not qualified |
+| `project.resume` | ≤2,500 tokens | bounded by unit test | `packages/memory/src/index.test.ts` |
+| real Forge model VRAM/latency | — | NOT MEASURED | no GPU or real model run |
 
 ## 10. Spend
 
-Default `$0`; no hosted calls or paid research performed.
+Default `$0`; no hosted calls, provider keys, paid calls, or paid research were used.
 
 ## 11. Owner asks pending
 
-The Owner formally authorized Phase 1 closure on 2026-10-20 with the statement: “phase 1 is officially complete. i give the formal permission.” This acknowledgement explicitly accepts and defers the remaining qualification limits: the optional real native enrollment click, Electron packaging/distribution, non-Windows native `safeStorage` profiles, and host-specific footprint qualification. These remain `NOT RUN`/`NOT_QUALIFIED` and are not release claims. The automated native cancel/confirm coverage remains the evidence for the implemented enrollment path. No credential or secret should be pasted into chat.
+- Optionally run the hardware harness and, with a bounded spend cap, an optional live provider fixture; store credentials through Warden/GUI, never in files or chat.
 
 ## 12. How to resume
 
 ```text
+Read docs/BUILD_STATE.md and docs/evidence/phase2/INDEX.md.
 corepack pnpm install --frozen-lockfile
 corepack pnpm run test
-corepack pnpm run test:electron
-corepack pnpm run test:electron-human-channel
-corepack pnpm run test:e2e
 corepack pnpm run typecheck
-LP_SMOKE_TOKEN=<ephemeral-token> bash scripts/verify-rebuild.sh 1
+node scripts/catalog-lint.mjs --json
+corepack pnpm run forge-demo
+corepack pnpm run test:e2e
+LP_SMOKE_TOKEN=<ephemeral-token> bash scripts/verify-rebuild.sh 2
 ```
 
-Read this file with `docs/evidence/phase1/INDEX.md`, `docs/pack/01_MASTER_PROMPT.md`, `docs/pack/03_ARCHITECTURE.md`, `docs/pack/09_SECURITY_RECOVERY_PROVENANCE.md`, and Phase 1 §5 of `docs/pack/11_ROADMAP_AND_PHASE_PROMPTS.md`. The current code is in `packages/memory/`, `packages/warden/`, `packages/runner/`, `apps/lpd/`, `apps/cli/`, `apps/gui/`, and `apps/electron/`; the current Docker receipt is `docs/evidence/phase1/verify-rebuild.md`.
+The last command is only for a clean committed checkout with Docker. Do not
+interpret the fixture `QUALIFIED` badges or native green tests as real-model,
+hosted-vendor, GPU, Owner-hardware, packaging, or creative-quality qualification.

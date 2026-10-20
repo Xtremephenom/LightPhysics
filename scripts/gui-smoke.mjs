@@ -199,6 +199,10 @@ async function main() {
       "Phase 0 · Walking skeleton",
       "Mode A · External agent ready",
       'id="token-form"',
+      'href="#models"',
+      'id="models-view"',
+      'data-testid="model-card-mock-image-generator"',
+      'data-testid="hardware-profile"',
     ];
     for (const marker of shellMarkers) assert(shell.body.includes(marker), `shell marker missing: ${marker}`);
 
@@ -210,6 +214,8 @@ async function main() {
       "elements.daemonVersion",
       "elements.footerStatus",
       "Daemon connected",
+      "window.location.hash === \"#models\"",
+      "modelsView",
     ];
     for (const marker of appMarkers) assert(app.body.includes(marker), `status update marker missing: ${marker}`);
 

@@ -59,6 +59,12 @@ test("the Docker deps stage copies every workspace manifest before installing de
   }
 });
 
+test("the offline test runner includes catalog-lint before workspace and root tests", () => {
+  const runner = read("scripts/test.mjs");
+  assert.match(runner, /\["catalog-lint",\s*"scripts\/catalog-lint\.mjs"\]/);
+  assert.ok(runner.indexOf('"catalog-lint"') < runner.indexOf('"root-tests"'));
+});
+
 test("the Docker test stage provisions pinned Chromium before running the real browser journey", () => {
   const dockerfile = read("Dockerfile");
   const depsStart = dockerfile.indexOf("FROM base AS deps");

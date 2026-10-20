@@ -1,0 +1,41 @@
+{
+  "kind": "model",
+  "schema_version": 1,
+  "id": "mock-image-generator",
+  "display_name": "Mock Image Generator",
+  "fixture": true,
+  "provider": "mock-local",
+  "capabilities": ["image.generate", "image.edit"],
+  "runtime": {"kind": "mock", "version": "1", "weights": "none"},
+  "hardware": {
+    "vram_gb_min": 0,
+    "ram_gb_min": 0,
+    "disk_gb": 0,
+    "label_on_ref_hw": "green",
+    "notes": "Produces deterministic placeholder artifacts; not a creative model."
+  },
+  "license": {
+    "id": "MIT",
+    "commercial_use": true,
+    "source": "local fixture; repository source is the license record",
+    "verified_at": "2026-10-20",
+    "ledger_id": "ledger:phase2:catalog-mock-image-license"
+  },
+  "quality": {"text_rendering": "not_applicable", "strengths": ["contract fixtures"]},
+  "fidelity_map": {
+    "sketch": {"supported": true, "max_dimension": 512, "notes": "fixture only"},
+    "draft": {"supported": true, "max_dimension": 768, "notes": "fixture only"},
+    "final": {"supported": true, "max_dimension": 1024, "notes": "fixture only"}
+  },
+  "determinism": "seeded",
+  "cost": {"local": true, "amount": 0, "currency": "USD"},
+  "qualification": {
+    "status": "QUALIFIED",
+    "machine_profile": "mock-offline-node24",
+    "verified_at": "2026-10-20",
+    "ledger_id": "ledger:phase2:catalog-mock-image-qualification",
+    "scope": "mock adapter schema, seed repeatability, and failure injection"
+  },
+  "verified_at": "2026-10-20",
+  "ledger_id": "ledger:phase2:catalog-mock-image"
+}

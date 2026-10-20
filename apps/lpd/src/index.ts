@@ -80,6 +80,12 @@ import {
   type PermissionClass,
 } from "@lightphysics/warden";
 import { z } from "zod";
+import {
+  createForgeRuntime,
+  type ForgeRouter,
+  type ForgeRuntimeOptions,
+} from "./forge-runtime.ts";
+import type { ForgeAdapter } from "@lightphysics/forge";
 
 export const LPD_VERSION = "0.1.0";
 export const LPD_DEFAULT_PATH = "/rpc";
@@ -128,6 +134,13 @@ export interface ServerOptions {
   projectRoot?: string;
   version?: string;
   context?: CoreMethodContext;
+  /** Optional Phase 2 Forge composition seams. */
+  forge?: ForgeRuntimeOptions;
+  forgeAdapters?: readonly ForgeAdapter[];
+  forgeRouter?: ForgeRouter;
+  forgeDataPolicy?: ForgeRuntimeOptions["dataPolicy"];
+  forgeSpend?: ForgeRuntimeOptions["spend"];
+  forgeProjectId?: string;
 }
 
 export interface AuthFailureRateLimitOptions {
@@ -1115,6 +1128,19 @@ export function createServer(options: ServerOptions = {}): LpdServer {
   if (!options.registry) {
     registerJobMethods(registry, getJournal, options.warden, options.ledger);
     registerProjectMethods(registry, () => projectRoot, options.warden, options.ledger);
+    const forgeLedger = options.forge?.ledger ?? options.ledger;
+    const forgeWarden = options.forge?.warden ?? options.warden;
+    const forgeOptions: ForgeRuntimeOptions = {
+      ...(options.forge ?? {}),
+      ...(options.forgeAdapters === undefined ? {} : { adapters: options.forgeAdapters }),
+      ...(options.forgeRouter === undefined ? {} : { router: options.forgeRouter }),
+      ...(options.forgeDataPolicy === undefined ? {} : { dataPolicy: options.forgeDataPolicy }),
+      ...(options.forgeSpend === undefined ? {} : { spend: options.forgeSpend }),
+      ...(options.forgeProjectId === undefined ? {} : { projectId: options.forgeProjectId }),
+      ...(forgeLedger === undefined ? {} : { ledger: forgeLedger }),
+      ...(forgeWarden === undefined ? {} : { warden: forgeWarden }),
+    };
+    createForgeRuntime(forgeOptions).register(registry);
   }
   const dispatcher = options.dispatcher ?? new Dispatcher(registry, {
     context: {

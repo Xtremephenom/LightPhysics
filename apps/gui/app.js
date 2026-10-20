@@ -27,12 +27,28 @@
     humanNote: document.querySelector("#security-human-note"),
     humanEnroll: document.querySelector("#human-channel-enroll"),
     toast: document.querySelector("#toast"),
+    modelsView: document.querySelector("#models-view"),
+    modelsNav: document.querySelector('[data-nav="models"]'),
   };
 
   const securityControl = window.lightPhysicsShell?.securityControl;
 
   function setText(element, value) {
     if (element) element.textContent = value;
+  }
+
+  function renderView() {
+    const showModels = window.location.hash === "#models";
+    const homeSections = document.querySelectorAll("#studio-floor > section:not(#models-view)");
+    for (const section of homeSections) section.hidden = showModels;
+    if (elements.modelsView) elements.modelsView.hidden = !showModels;
+    for (const item of document.querySelectorAll(".nav-item")) {
+      const active = showModels ? item === elements.modelsNav : item.getAttribute("href") === "#studio-floor";
+      item.classList.toggle("active", active);
+      if (active) item.setAttribute("aria-current", "page");
+      else item.removeAttribute("aria-current");
+    }
+    if (showModels) setText(elements.footerStatus, "Offline catalog · read-only");
   }
 
   function showToast(message, error = false) {
@@ -223,6 +239,8 @@
     showToast("Project creation arrives with the Memory module in Phase 1.");
   });
 
+  window.addEventListener("hashchange", renderView);
   setConnection("idle", "Not connected");
+  renderView();
   void refreshHumanChannelStatus();
 })();

@@ -4,6 +4,7 @@ import {
   SystemPingResultSchema,
   type CoreApiSchemaName,
 } from "./index.ts";
+import { ForgeJsonValueSchema } from "./forge.ts";
 import {
   type JsonSchema,
   type JsonSchemaOverride,
@@ -54,11 +55,23 @@ const coreJsonValueOverride: JsonSchemaOverride = (base) => ({
   },
 });
 
+/** Forge uses the same bounded JSON rules at its provider/constraint boundary. */
+const forgeJsonValueOverride: JsonSchemaOverride = (base) => ({
+  ...base,
+  "x-lightphysics-json-bounds": {
+    maxBytes: 64 * 1024,
+    maxDepth: 16,
+    maxItems: 256,
+    rejectsSecretLikeKeysAndValues: true,
+  },
+});
+
 const overrides = new Map<ZodTypeAny, JsonSchemaOverride>([
   [SystemPingResultSchema, systemPingResultOverride],
   [CoreJsonValueSchema, coreJsonValueOverride],
+  [ForgeJsonValueSchema, forgeJsonValueOverride],
 ]);
-const allowedRefinements = new Set([SystemPingResultSchema, CoreJsonValueSchema]);
+const allowedRefinements = new Set([SystemPingResultSchema, CoreJsonValueSchema, ForgeJsonValueSchema]);
 
 /** Generate every Core API JSON-Schema document from its Zod 3 contract. */
 export function generateCoreApiJsonSchemas(): CoreApiJsonSchemas {

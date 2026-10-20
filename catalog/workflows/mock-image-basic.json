@@ -1,0 +1,39 @@
+{
+  "kind": "workflow",
+  "schema_version": 1,
+  "id": "mock-image-basic",
+  "display_name": "Mock image.generate basic",
+  "fixture": true,
+  "provider": "mock-local",
+  "model": "mock-image-generator",
+  "capabilities": ["image.generate"],
+  "runtime": {"kind": "mock", "workflow_version": "1", "workflow_hash": "fixture-no-bytes"},
+  "hardware": {
+    "vram_gb_min": 0,
+    "ram_gb_min": 0,
+    "disk_gb": 0,
+    "label_on_ref_hw": "green",
+    "notes": "No external workflow service is contacted."
+  },
+  "license": {
+    "id": "MIT",
+    "commercial_use": true,
+    "source": "local fixture; repository source is the license record",
+    "verified_at": "2026-10-20",
+    "ledger_id": "ledger:phase2:catalog-mock-workflow-license"
+  },
+  "fidelity_map": {
+    "sketch": {"supported": true, "max_dimension": 512},
+    "draft": {"supported": true, "max_dimension": 768},
+    "final": {"supported": true, "max_dimension": 1024}
+  },
+  "qualification": {
+    "status": "QUALIFIED",
+    "machine_profile": "mock-offline-node24",
+    "verified_at": "2026-10-20",
+    "ledger_id": "ledger:phase2:catalog-mock-workflow-qualification",
+    "scope": "workflow request/response fixture only"
+  },
+  "verified_at": "2026-10-20",
+  "ledger_id": "ledger:phase2:catalog-mock-workflow"
+}

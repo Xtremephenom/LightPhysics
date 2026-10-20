@@ -223,6 +223,15 @@ test("Studio Floor connects through the browser to live system.info", async () =
     await expect(page.locator("#security")).toContainText("Unavailable");
     await expect(page.locator("#security-human-status")).toHaveText("Electron shell required");
     await expect(page.locator("#human-channel-enroll")).toBeDisabled();
+    await page.locator('a[href="#models"]').click();
+    await expect(page.locator("#models-view")).toBeVisible();
+    await expect(page.locator('[data-testid="hardware-profile"]')).toContainText("RTX 3050 Laptop");
+    await expect(page.locator('[data-testid="model-card-mock-image-generator"]')).toContainText("QUALIFIED");
+    await expect(page.locator('[data-testid="catalog-disclaimer"]')).toContainText("do not qualify any real model");
+    await expect(page.locator("#studio-floor > section#activity")).toBeHidden();
+    await page.locator('a[href="#studio-floor"]').click();
+    await expect(page.locator("#models-view")).toBeHidden();
+    await expect(page.locator("#studio-floor > section#activity")).toBeVisible();
     expect(await page.evaluate(() => Object.keys(window.lightPhysicsShell ?? {}))).toEqual([]);
     expect(await page.evaluate(() => typeof window.lightPhysicsShell?.securityControl?.recordDecision)).toBe("undefined");
 

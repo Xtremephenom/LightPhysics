@@ -1,0 +1,41 @@
+{
+  "kind": "pricing",
+  "schema_version": 1,
+  "id": "mock-local",
+  "display_name": "Offline mock pricing",
+  "fixture": true,
+  "provider": "mock-local",
+  "model": "mock-image-generator",
+  "capabilities": ["image.generate", "image.edit", "vision.inspect", "vision.ocr", "audio.sfx"],
+  "unit": "request",
+  "currency": "USD",
+  "amount": 0,
+  "hardware": {
+    "vram_gb_min": 0,
+    "ram_gb_min": 0,
+    "disk_gb": 0,
+    "label_on_ref_hw": "green",
+    "notes": "Fixture accounting only; no hosted price is implied."
+  },
+  "license": {
+    "id": "MIT",
+    "commercial_use": true,
+    "source": "local fixture; repository source is the license record",
+    "verified_at": "2026-10-20",
+    "ledger_id": "ledger:phase2:catalog-mock-pricing-license"
+  },
+  "fidelity_map": {
+    "sketch": {"supported": true, "max_dimension": 512},
+    "draft": {"supported": true, "max_dimension": 768},
+    "final": {"supported": true, "max_dimension": 1024}
+  },
+  "qualification": {
+    "status": "QUALIFIED",
+    "machine_profile": "mock-offline-node24",
+    "verified_at": "2026-10-20",
+    "ledger_id": "ledger:phase2:catalog-mock-pricing-qualification",
+    "scope": "deterministic zero-cost accounting fixture"
+  },
+  "verified_at": "2026-10-20",
+  "ledger_id": "ledger:phase2:catalog-mock-pricing"
+}

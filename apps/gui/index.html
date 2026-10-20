@@ -40,7 +40,7 @@
             <a class="nav-item active" href="#studio-floor"><span aria-hidden="true">◈</span> Studio Floor</a>
             <a class="nav-item" href="#project"><span aria-hidden="true">▦</span> Project</a>
             <a class="nav-item" href="#assets"><span aria-hidden="true">◇</span> Assets</a>
-            <a class="nav-item" href="#models"><span aria-hidden="true">✧</span> Models &amp; Providers</a>
+            <a class="nav-item" href="#models" data-nav="models"><span aria-hidden="true">✧</span> Models &amp; Providers</a>
             <a class="nav-item" href="#skills"><span aria-hidden="true">⌘</span> Skills &amp; Tools</a>
             <a class="nav-item" href="#quality"><span aria-hidden="true">✓</span> Production &amp; Quality</a>
           </nav>
@@ -199,6 +199,60 @@
               </div>
               <p class="muted security-note">Approvals require the Electron main process and an explicitly enrolled device key. Agents can request work but cannot grant it.</p>
             </article>
+          </section>
+
+          <section class="models-view" id="models-view" data-testid="models-view" aria-labelledby="models-title" hidden>
+            <div class="page-heading models-heading">
+              <div>
+                <p class="eyebrow">MODELS &amp; PROVIDERS</p>
+                <h1 id="models-title">A small, honest catalog</h1>
+                <p class="muted">Read-only records for this workspace. Real models remain unqualified until an owner-run check exists.</p>
+              </div>
+              <span class="catalog-state" data-testid="catalog-state"><span class="status-dot"></span> Offline catalog</span>
+            </div>
+
+            <div class="models-summary" data-testid="models-summary">
+              <article class="hardware-card panel" data-testid="hardware-profile">
+                <div class="panel-heading"><div><p class="eyebrow">HARDWARE PROFILE</p><h2>Reference laptop</h2></div><span class="label-badge label-yellow">🟡 compromise</span></div>
+                <dl class="info-list hardware-list">
+                  <div><dt>Profile</dt><dd>RTX 3050 Laptop · 4 GB VRAM</dd></div>
+                  <div><dt>System memory</dt><dd>16 GB RAM</dd></div>
+                  <div><dt>Detection</dt><dd class="offline-text">Offline fixture</dd></div>
+                </dl>
+                <p class="muted card-note">No GPU probe ran in this browser. Labels are catalog guidance, not a qualification.</p>
+              </article>
+              <article class="panel routing-card" data-testid="routing-summary">
+                <div class="panel-heading"><div><p class="eyebrow">ROUTING &amp; PRIVACY</p><h2>Local-only default</h2></div><span class="label-badge label-green">🟢 local</span></div>
+                <p class="routing-copy">The fixture route stays on this machine. Hosted providers are not configured and no prompt or key leaves the app.</p>
+                <div class="routing-row"><span>Policy</span><strong>local_only</strong></div>
+                <div class="routing-row"><span>Fallbacks</span><strong>none configured</strong></div>
+              </article>
+            </div>
+
+            <div class="catalog-toolbar" data-testid="catalog-toolbar">
+              <div><p class="eyebrow">CATALOG LEGEND</p><div class="label-legend"><span class="label-badge label-green">🟢 comfortable</span><span class="label-badge label-yellow">🟡 compromise</span><span class="label-badge label-red">🔴 needs stronger</span><span class="label-badge label-globe">🌐 hosted-best</span></div></div>
+              <span class="catalog-count" data-testid="catalog-count">2 mock models · 1 provider</span>
+            </div>
+            <div class="model-card-grid" data-testid="model-card-grid">
+              <article class="model-card panel" data-testid="model-card-mock-image-generator">
+                <div class="model-card-header"><div><p class="eyebrow">MOCK · IMAGE</p><h2>Mock Image Generator</h2></div><span class="label-badge label-green">🟢 fixture</span></div>
+                <p class="model-description">Deterministic placeholder artifacts for image.generate and image.edit contract tests. No weights are downloaded.</p>
+                <div class="model-meta"><span>Provider</span><strong>Offline Mock Local</strong></div>
+                <div class="model-meta"><span>Fidelity</span><strong>sketch · draft · final</strong></div>
+                <div class="model-badges"><span class="qualification-badge">✓ QUALIFIED</span><span class="fixture-badge">mock-offline-node24</span></div>
+                <p class="license-note license-ok">MIT · commercial use recorded · fixture only</p>
+              </article>
+              <article class="model-card panel" data-testid="model-card-mock-vision-inspector">
+                <div class="model-card-header"><div><p class="eyebrow">MOCK · VISION</p><h2>Mock Vision Inspector</h2></div><span class="label-badge label-green">🟢 fixture</span></div>
+                <p class="model-description">Fixture perception text for vision.inspect and vision.ocr. It does not inspect real images.</p>
+                <div class="model-meta"><span>Provider</span><strong>Offline Mock Local</strong></div>
+                <div class="model-meta"><span>Fidelity</span><strong>sketch · draft · final</strong></div>
+                <div class="model-badges"><span class="qualification-badge">✓ QUALIFIED</span><span class="fixture-badge">contract only</span></div>
+                <p class="license-note license-ok">MIT · commercial use recorded · fixture only</p>
+              </article>
+            </div>
+            <div class="empty-state models-empty" data-testid="models-empty-state"><div class="empty-art" aria-hidden="true">⌁</div><p>No hosted providers are configured. Add a provider through the future Core API surface; this view never asks for a secret.</p></div>
+            <p class="catalog-disclaimer" data-testid="catalog-disclaimer">Qualification badges above cover only deterministic mock adapter contracts. They do not qualify any real model, creative quality, or hardware performance.</p>
           </section>
         </main>
 

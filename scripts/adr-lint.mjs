@@ -12,9 +12,9 @@ const requiredSections = ["Context", "Options considered", "Evidence", "Decision
 try {
   const files = (await readdir(directory)).filter((name) => /^\d{4}-[^/]+\.md$/.test(name)).sort();
   const numbers = files.map((name) => Number(name.slice(0, 4)));
-  const expected = Array.from({ length: 19 }, (_, index) => index + 1);
+  const expected = Array.from({ length: files.length }, (_, index) => index + 1);
   if (files.length !== expected.length || numbers.some((number, index) => number !== expected[index])) {
-    failures.push(`expected ADR numbering 0001 through 0019 without gaps; found ${files.join(", ")}`);
+    failures.push(`expected sequential ADR numbering through ${String(files.length).padStart(4, "0")}; found ${files.join(", ")}`);
   }
   for (const fileName of files) {
     const fullPath = path.join(directory, fileName);
@@ -35,7 +35,7 @@ try {
     for (const failure of failures) console.error(`  ${failure}`);
     process.exitCode = 1;
   } else {
-    console.log("adr-lint: ADR-0001 through ADR-0019 are sequential and structurally valid");
+  console.log(`adr-lint: ADR-0001 through ADR-${String(files.length).padStart(4, "0")} are sequential and structurally valid`);
   }
 } catch (error) {
   console.error(`adr-lint: ${error instanceof Error ? error.message : String(error)}`);

@@ -61,6 +61,7 @@ COPY --chown=lp:lp packages/core-api/package.json packages/core-api/package.json
 COPY --chown=lp:lp packages/ledger/package.json packages/ledger/package.json
 COPY --chown=lp:lp packages/logging/package.json packages/logging/package.json
 COPY --chown=lp:lp packages/memory/package.json packages/memory/package.json
+COPY --chown=lp:lp packages/forge/package.json packages/forge/package.json
 COPY --chown=lp:lp packages/runner/package.json packages/runner/package.json
 COPY --chown=lp:lp packages/schemas/package.json packages/schemas/package.json
 COPY --chown=lp:lp packages/warden/package.json packages/warden/package.json

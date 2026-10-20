@@ -17,3 +17,4 @@ This index is intentionally small in the Phase 0 root bootstrap. Entries are cla
 | R-011 | Electron v44.9.0 is the official stable release recorded for the shell slice, and safeStorage documents platform-specific key providers plus a Linux basic_text fallback | VERIFIED | primary | 0 | 2026-12-18 |
 | R-012 | sqlite-vec v0.1.9's npm package resolves fixed optional platform artifacts, and Node 24.18.0 node:sqlite exposes the extension-loading API used by the spike | VERIFIED | primary | 0 | 2026-12-18 |
 | R-013 | FFmpeg 9.0.2 release-branch LGPL static x86_64 builds are available for the measured Windows and Linux Docker profiles with vendor-published SHA-256 checksums | VERIFIED | primary | 0 | 2026-12-18 |
+| R-014 | Phase 2 Forge atlas rows remain unqualified hypotheses unless primary-source and Owner hardware evidence is recorded | ASSUMED | memory | 2 | 2026-11-20 |

@@ -1,6 +1,6 @@
 # LightPhysics
 
-LightPhysics is a native-AI game studio with one local daemon, a shared Core API, an external-agent mode, and a standalone GUI mode. The Phase 0 walking skeleton now includes schema-first contracts, a typed dispatcher, a loopback-safe authenticated daemon, and cross-platform `lpd`/`lp` workspace wrappers. The current Phase 1 kernel implementation adds Ledger, Warden, Runner recovery, project Memory, and an Electron-main Human Channel boundary.
+LightPhysics is a native-AI game studio with one local daemon, a shared Core API, an external-agent mode, and a standalone GUI mode. The Phase 0 walking skeleton now includes schema-first contracts, a typed dispatcher, a loopback-safe authenticated daemon, and cross-platform `lpd`/`lp` workspace wrappers. The Phase 1 kernel adds Ledger, Warden, Runner recovery, project Memory, and an Electron-main Human Channel boundary. Phase 2 adds the offline-provable Forge/catalog surface and a mock creative consult path.
 
 ## Status
 
@@ -11,6 +11,7 @@ LightPhysics is a native-AI game studio with one local daemon, a shared Core API
 | Docker | Four-stage image starts the authenticated `lpd` runtime and installs the pinned FFmpeg 9.0.2 LGPL static artifact during the network-enabled base stage |
 | Application | `lpd` HTTP/WebSocket server, `lp` handlers, browser-served Studio Floor shell, local and Docker Playwright browser smokes, and an opt-in Electron shell smoke are runnable; packaging remains open |
 | Phase 1 kernel | Formally closed with tested and rebuild-verified implementation surfaces; Owner confirmation, packaging, non-Windows safeStorage, and hardware footprint qualification remain explicitly deferred or unqualified |
+| Phase 2 Forge | Offline/mock surfaces implemented; schemas, catalog lint, adapters, routing/privacy, spend, qualification records, perception, Style Lock, acquisition guards, `forge.create`, and read-only Models & Providers GUI are covered, with a few evidence gaps recorded; real-model/hosted/hardware qualification remains unrun |
 | Engine fixtures | Pinned Godot 4.7.2 fixture boot/check-only smoke and optional headless project-import evidence are recorded for Windows x64 and Linux x64 Docker; broader engine qualification remains open |
 
 Phase 1 is formally closed for the implemented surfaces. Its implementation
@@ -19,6 +20,13 @@ criteria are evidenced in
 and [the kernel rebuild receipt](docs/evidence/phase1/verify-rebuild.md). The
 remaining deferred limits are Owner interaction, packaging/distribution,
 non-Windows safeStorage profiles, and hardware footprint qualification.
+
+Phase 2's implemented offline surfaces and remaining evidence gaps are recorded
+in [phase2/INDEX](docs/evidence/phase2/INDEX.md) and
+[BUILD_STATE](docs/BUILD_STATE.md). The phase proves the machinery with
+deterministic fixtures and mock adapters; it does not claim that any real
+creative model, hosted vendor, GPU profile, or creative-quality result is
+qualified.
 
 ## Setup
 
@@ -49,10 +57,18 @@ absent.
 
 ## Run and test
 
-The one offline test command runs the Phase 0 hygiene checks plus the current Phase 1 SQLite/FTS5, Warden, Runner, Memory, lpd, GUI-boundary, and TypeScript workspace tests. It needs no Docker, network, GPU, provider key, or installed engine.
+The one offline test command runs the Phase 0 hygiene checks plus the Phase 1 kernel, Phase 2 Forge/catalog, SQLite/FTS5, Warden, Runner, Memory, lpd, GUI-boundary, and TypeScript workspace tests. It needs no Docker, network, GPU, provider key, or installed engine.
 
 ```sh
 pnpm run test
+```
+
+The Phase 2 consult demo exercises `forge.create` through the daemon's
+in-process Core dispatcher and records a digest-only provenance trail in a
+temporary Ledger. It never calls a real provider or writes project files:
+
+```sh
+corepack pnpm run forge-demo
 ```
 
 The Phase 0 GUI prerequisite smoke can also be run directly:
@@ -397,7 +413,7 @@ The future command is `lp connect claude-code|codex|cursor|gemini-cli|generic`. 
 
 ## Deploy
 
-There is no packaged desktop release yet. The supported Phase 0/1 run paths are the native authenticated daemon plus its loopback browser shell, the opt-in Electron shell and Human Channel smokes, and the Docker runtime image with a runtime-supplied token. The Docker image is suitable for the authenticated service smoke, not a production release artifact. Running the Electron shell smoke or footprint measurement does not prove Electron packaging, Docker browser packaging, Windows installer coverage, or a distributable desktop artifact; those claims require separate packaging evidence after an opt-in run on a machine with the pinned Electron package and display support.
+There is no packaged desktop release yet. The supported Phase 0–2 run paths are the native authenticated daemon plus its loopback browser shell, the offline/mock Forge consult demo, the read-only Models & Providers view, the opt-in Electron shell and Human Channel smokes, and the Docker runtime image with a runtime-supplied token. The Docker image is suitable for the authenticated service smoke, not a production release artifact. Running the Electron shell smoke or footprint measurement does not prove Electron packaging, Docker browser packaging, Windows installer coverage, or a distributable desktop artifact; those claims require separate packaging evidence after an opt-in run on a machine with the pinned Electron package and display support.
 
 ## Windows notes
 
@@ -417,7 +433,7 @@ Use the exact versions in `.node-version` and `.python-version`. Keep long-path 
 
 ## Security and honest limits
 
-Conditional tar.xz availability outside the measured profile, native Linux and cross-profile engine/runtime qualification beyond the measured Godot/uv/Blender/FFmpeg profiles, provider behavior, and final project-license details remain explicitly open. The pinned Godot Windows x64/Linux x64 Docker fixture and headless project-import smokes, uv Windows/Linux x64 Docker, Blender Windows/Linux x64 Docker smokes, and FFmpeg Windows/Linux x64 Docker smokes passed, but each claim is limited to its recorded profile and command. The repository chooses a safe fallback: no tool installer runs for an unknown lock entry, no secrets are placed in files or image layers, and no production success is simulated. Passing the offline bootstrap and Docker runtime smoke proves the authenticated Phase 0 daemon path only; it does not prove an engine on other profiles, model, external agent, GPU, Windows package, or game-quality result.
+Conditional tar.xz availability outside the measured profile, native Linux and cross-profile engine/runtime qualification beyond the measured Godot/uv/Blender/FFmpeg profiles, every real model/provider claim in the Phase 2 atlas, hosted API behavior, and final project-license details remain explicitly open. The pinned Godot Windows x64/Linux x64 Docker fixture and headless project-import smokes, uv Windows/Linux x64 Docker, Blender Windows/Linux x64 Docker smokes, and FFmpeg Windows/Linux x64 Docker smokes passed, but each claim is limited to its recorded profile and command. The repository chooses a safe fallback: no tool installer runs for an unknown lock entry, no secrets are placed in files or image layers, and no production success is simulated. Passing the offline bootstrap, Forge mock consult, and Docker runtime smoke proves the tested machinery only; it does not prove a real model, hosted provider, engine on other profiles, external agent, GPU, Windows package, or game-quality result.
 
 ## Licensing and third-party notices
 

@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { FORGE_SCHEMA_REGISTRY } from "./forge.ts";
+export * from "./forge.ts";
 
 /** JSON-RPC permits string, number, or null identifiers. Notifications omit id. */
 export const JsonRpcIdSchema = z.union([
@@ -524,6 +526,7 @@ export const CORE_API_SCHEMA_REGISTRY = {
   SystemPingResponseSchema,
   SystemInfoRequestSchema,
   SystemInfoResponseSchema,
+  ...FORGE_SCHEMA_REGISTRY,
 } as const;
 
 export type CoreApiSchemaName = keyof typeof CORE_API_SCHEMA_REGISTRY;

@@ -39,5 +39,7 @@ docs/evidence/*
 !docs/evidence/phase1/
 docs/evidence/phase1/*
 !docs/evidence/phase1/verify-rebuild.md
+!docs/evidence/phase2/
+!docs/evidence/phase2/**
 docs/acceptance/results/
 *.log

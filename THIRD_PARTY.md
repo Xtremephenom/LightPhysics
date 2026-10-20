@@ -1,6 +1,6 @@
 # Third-party notices
 
-Phase 0 has a small, lockfile-managed npm graph for the existing TypeScript workspace. It has no Python, engine, model, or provider dependency. The project license is MIT in `LICENSE` and ADR-0018; third-party dependency/tool review remains separate and is not commercial clearance.
+Phase 2 keeps the Forge/catalog implementation dependency-light: it uses the existing lockfile-managed TypeScript graph and deterministic fixtures, with no model weights, Python worker environment, hosted provider SDK, or provider key in the repository. The project license is MIT in `LICENSE` and ADR-0018; third-party dependency/tool/model review remains separate and is not commercial clearance.
 
 ## Build inputs
 
@@ -17,6 +17,7 @@ Phase 0 has a small, lockfile-managed npm graph for the existing TypeScript work
 | @playwright/test | root `devDependencies` | `1.64.1` | Exact browser-test dependency; [R-005] | Registry metadata reports Apache-2.0; browser binaries are installed separately and are not committed. |
 | playwright / playwright-core | transitive dependency of `@playwright/test` | `1.64.1` | Exact lockfile entries; [R-005] | Review upstream notices before distribution; used only by opt-in browser tests. |
 | pnpm | `package.json#packageManager` | `12.14.0` | Pinned project tool | Add the upstream notice when pnpm is vendored or distributed. |
+| Forge/catalog fixtures | `packages/forge/`, `catalog/` | Phase 2 mock/fixture code and records | Offline tests only | No external model weights or provider SDKs; records are explicitly not real-model qualification. |
 | uv, Godot, Blender | `tools.lock.json` | Scoped pinned profiles | Windows x64/Linux x64 Docker smokes recorded | These runtime/tool claims remain limited to their evidence receipts; review upstream notices before distribution. |
 | ffmpeg | `tools.lock.json`, R-013 | `9.0.2`, `n9.0.2-28-g669f5ab083`, LGPL static | Windows x64 and Linux x64 Docker version/lavfi smokes recorded | BtbN's LGPL static build is used only as a pinned subprocess artifact; FFmpeg upstream terms and codec obligations do not choose the LightPhysics project license. |
 

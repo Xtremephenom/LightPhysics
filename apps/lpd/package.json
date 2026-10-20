@@ -13,6 +13,7 @@
   "dependencies": {
     "@lightphysics/config": "workspace:*",
     "@lightphysics/core-api": "workspace:*",
+    "@lightphysics/forge": "workspace:*",
     "@lightphysics/ledger": "workspace:*",
     "@lightphysics/logging": "workspace:*",
     "@lightphysics/memory": "workspace:*",

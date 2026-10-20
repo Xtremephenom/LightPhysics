@@ -14,6 +14,7 @@ import {
   type CoreClientRequest,
 } from "@lightphysics/core-api";
 import { Ledger } from "@lightphysics/ledger";
+import { MockAdapter, ForgeError, type ForgeAdapter } from "@lightphysics/forge";
 import { JobJournal, type SupervisorChild, type SupervisorKillRequest } from "@lightphysics/runner";
 import { initProject } from "@lightphysics/memory";
 import {
@@ -1287,6 +1288,212 @@ describe("lpd HTTP walking skeleton", () => {
     } finally {
       await closeKernel(inProcessKernel);
       await closeKernel(remoteKernel);
+    }
+  });
+
+  it("wires forge.create through HTTP and in-process clients with identical Ledger outcomes", async () => {
+    type ForgeKernel = { home: string; server: LpdServer; ledger: Ledger; close: () => Promise<void> };
+    const makeKernel = async (): Promise<ForgeKernel> => {
+      const home = mkdtempSync(path.join(os.tmpdir(), "lightphysics-lpd-forge-parity-"));
+      const ledger = new Ledger({ home, now: () => "2026-01-01T00:00:00.000Z" });
+      const server = await startServer({
+        config: loadConfig({ LP_HOME: home, LP_PORT: "4317" }),
+        port: 0,
+        token: "forge-token",
+        ledger,
+        forge: { adapters: [new MockAdapter()], ledger },
+      });
+      return {
+        home,
+        server,
+        ledger,
+        close: async () => {
+          await new Promise<void>((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
+          ledger.close();
+          rmSync(home, { recursive: true, force: true });
+        },
+      };
+    };
+    const inProcess = await makeKernel();
+    const remote = await makeKernel();
+    const request = (id: number): CoreClientRequest => ({
+      jsonrpc: "2.0",
+      id,
+      method: "forge.create",
+      params: { capability: "image.generate", prompt: "a hidden prompt", fidelity: "sketch", seed: 7 },
+      context: { session_id: "forge-session", trace_id: "forge-trace", idempotency_key: "forge-create-1" },
+    });
+    try {
+      const address = serverAddress(remote.server);
+      if (!address) throw new Error("forge parity server is not listening");
+      const parity = await assertCoreClientParity(
+        new InProcessClient(inProcess.server.dispatcher),
+        new RemoteClient({ url: `http://127.0.0.1:${address.port}/rpc`, token: "forge-token" }),
+        [request(1)],
+      );
+      expect(parity.equal).toBe(true);
+      expect(parity.inProcess[0]).toMatchObject({ result: {
+        status: "done",
+        artifacts: [{ state: "exploration", recipe_id: expect.stringMatching(/^recipe-[0-9a-f]{64}$/) }],
+        provenance: { request_hash: expect.stringMatching(/^[0-9a-f]{64}$/) },
+      } });
+      expect(inProcess.ledger.listArtifacts()).toEqual(remote.ledger.listArtifacts());
+      expect(inProcess.ledger.listAudits()).toEqual(remote.ledger.listAudits());
+      expect(inProcess.ledger.verifyChain()).toEqual(remote.ledger.verifyChain());
+      expect(inProcess.ledger.verifyChain()).toMatchObject({ ok: true, checkedRecords: 3 });
+      const serialized = JSON.stringify(inProcess.ledger.listRecords());
+      expect(serialized).not.toContain("hidden prompt");
+    } finally {
+      await inProcess.close();
+      await remote.close();
+    }
+  });
+
+  it("replays forge.create idempotently without rerunning the provider or appending Ledger records", async () => {
+    const home = mkdtempSync(path.join(os.tmpdir(), "lightphysics-lpd-forge-replay-"));
+    const ledger = new Ledger({ home, now: () => "2026-01-01T00:00:00.000Z" });
+    let runs = 0;
+    const adapter = new MockAdapter();
+    const counting = {
+      id: adapter.id,
+      describe: () => adapter.describe(),
+      health: () => adapter.health(),
+      estimate: (request: Parameters<ForgeAdapter["estimate"]>[0]) => adapter.estimate(request),
+      run: async (...args: Parameters<ForgeAdapter["run"]>) => {
+        runs += 1;
+        return adapter.run(...args);
+      },
+      qualify: () => adapter.qualify(),
+    } as unknown as ForgeAdapter;
+    const localServer = await startServer({ port: 0, token: "forge-token", ledger, forgeAdapters: [counting] });
+    try {
+      const base = {
+        jsonrpc: "2.0" as const,
+        method: "forge.create",
+        params: { capability: "image.generate", prompt: "replay prompt" },
+        context: { session_id: "replay-session", trace_id: "replay-trace", idempotency_key: "replay-1" },
+      };
+      const first = await rpc(localServer, { ...base, id: 1 }, { token: "forge-token" });
+      const replay = await rpc(localServer, { ...base, id: 2 }, { token: "forge-token" });
+      expect(replay.body.result).toEqual(first.body.result);
+      expect(runs).toBe(1);
+      expect(ledger.listRecords()).toHaveLength(3);
+    } finally {
+      await new Promise<void>((resolve, reject) => localServer.close((error) => error ? reject(error) : resolve()));
+      ledger.close();
+      rmSync(home, { recursive: true, force: true });
+    }
+  });
+
+  it("blocks hosted Forge routes under local_only and maps provider failures visibly", async () => {
+    const hosted = new MockAdapter({ id: "hosted-mock" });
+    const hostedAdapter = {
+      id: hosted.id,
+      describe: () => ({ ...hosted.describe(), kind: "hosted" as const }),
+      health: () => hosted.health(),
+      estimate: (request: Parameters<ForgeAdapter["estimate"]>[0]) => hosted.estimate(request),
+      run: (...args: Parameters<ForgeAdapter["run"]>) => hosted.run(...args),
+      qualify: () => hosted.qualify(),
+    } as unknown as ForgeAdapter;
+    const blocked = await startServer({ port: 0, token: "forge-token", forge: {
+      adapters: [hostedAdapter], dataPolicy: "local_only",
+    } });
+    try {
+      const response = await rpc(blocked, {
+        jsonrpc: "2.0", id: 1, method: "forge.create",
+        params: { capability: "image.generate", prompt: "private" },
+        context: { session_id: "s", trace_id: "t", idempotency_key: "local-only-1" },
+      }, { token: "forge-token" });
+      expect(response.body.error.data.code).toBe("ResourceUnavailable");
+    } finally {
+      await new Promise<void>((resolve, reject) => blocked.close((error) => error ? reject(error) : resolve()));
+    }
+
+    const failing = new MockAdapter({ failure: "timeout" });
+    const providerServer = await startServer({ port: 0, token: "forge-token", forgeAdapters: [failing] });
+    try {
+      const response = await rpc(providerServer, {
+        jsonrpc: "2.0", id: 2, method: "forge.create",
+        params: { capability: "image.generate", prompt: "failure" },
+        context: { session_id: "s", trace_id: "t2", idempotency_key: "timeout-1" },
+      }, { token: "forge-token" });
+      expect(response.body.error.data.code).toBe("ProviderError");
+    } finally {
+      await new Promise<void>((resolve, reject) => providerServer.close((error) => error ? reject(error) : resolve()));
+    }
+  });
+
+  it("requires Warden write_project and spend authorization and surfaces budget rejection", async () => {
+    const runtime = deterministicWardenRuntime();
+    const warden = new WardenSessionManager({ clock: runtime.clock, randomBytes: runtime.randomBytes, policy: { defaultMode: "auto" } });
+    const reader = warden.createSession({ kind: "agent", permissions: ["read"] });
+    const writer = warden.createSession({ kind: "agent", permissions: ["write_project"] });
+    const localServer = await startServer({ port: 0, token: "forge-token", warden });
+    try {
+      const denied = await rpc(localServer, {
+        jsonrpc: "2.0", id: 1, method: "forge.create",
+        params: { capability: "image.generate" },
+        context: { session_id: reader.sessionId, trace_id: "reader", idempotency_key: "warden-1" },
+      }, { token: "forge-token" });
+      expect(denied.body.error.data.code).toBe("PermissionDenied");
+
+      const spendDenied = await rpc(localServer, {
+        jsonrpc: "2.0", id: 2, method: "forge.create",
+        params: { capability: "image.generate" },
+        context: { session_id: writer.sessionId, trace_id: "writer", idempotency_key: "warden-2" },
+      }, { token: "forge-token" });
+      expect(spendDenied.body.error.data.code).toBe("PermissionDenied");
+    } finally {
+      await new Promise<void>((resolve, reject) => localServer.close((error) => error ? reject(error) : resolve()));
+    }
+
+    const paidBase = new MockAdapter();
+    const paid = {
+      id: paidBase.id,
+      describe: () => paidBase.describe(),
+      health: () => paidBase.health(),
+      estimate: () => ({ cost: 1, currency: "USD" }),
+      run: (...args: Parameters<ForgeAdapter["run"]>) => paidBase.run(...args),
+      qualify: () => paidBase.qualify(),
+    } as unknown as ForgeAdapter;
+    const budgetWarden = new WardenSessionManager({
+      clock: runtime.clock,
+      randomBytes: runtime.randomBytes,
+      policy: { defaultMode: "auto" },
+      budgetLimit: 0,
+    });
+    const budgetSession = budgetWarden.createSession({ kind: "agent", permissions: ["write_project", "spend"] });
+    const budgetServer = await startServer({ port: 0, token: "forge-token", warden: budgetWarden, forgeAdapters: [paid] });
+    try {
+      const result = await rpc(budgetServer, {
+        jsonrpc: "2.0", id: 3, method: "forge.create",
+        params: { capability: "image.generate" },
+        context: { session_id: budgetSession.sessionId, trace_id: "budget", idempotency_key: "budget-1" },
+      }, { token: "forge-token" });
+      expect(result.body.error.data.code).toBe("BudgetExceeded");
+    } finally {
+      await new Promise<void>((resolve, reject) => budgetServer.close((error) => error ? reject(error) : resolve()));
+    }
+  });
+
+  it("maps an explicit unqualified adapter path to the Core error taxonomy", async () => {
+    const adapter = {
+      id: "unqualified",
+      describe: () => ({ id: "unqualified", kind: "local" as const, capabilities: ["image.generate" as const], model: "test", version: "1" }),
+      health: async () => ({ healthy: true, status: "ok" as const }),
+      estimate: () => ({ cost: 0, currency: "USD" }),
+      run: async () => { throw new ForgeError("Unqualified", "model has not been qualified"); },
+      qualify: async () => ({ status: "UNQUALIFIED" as const, adapter_id: "unqualified", machine_profile: "test", versions: {}, date: "2026-01-01T00:00:00.000Z", checks: [] }),
+    } as unknown as ForgeAdapter;
+    const localServer = await startServer({ port: 0, token: "forge-token", forgeAdapters: [adapter] });
+    try {
+      const result = await rpc(localServer, {
+        jsonrpc: "2.0", id: 4, method: "forge.create", params: { capability: "image.generate" },
+        context: { session_id: "s", trace_id: "u", idempotency_key: "unqualified-1" },
+      }, { token: "forge-token" });
+      expect(result.body.error.data.code).toBe("Unqualified");
+    } finally {
+      await new Promise<void>((resolve, reject) => localServer.close((error) => error ? reject(error) : resolve()));
     }
   });
 });

@@ -1,0 +1,41 @@
+{
+  "kind": "model",
+  "schema_version": 1,
+  "id": "mock-vision-inspector",
+  "display_name": "Mock Vision Inspector",
+  "fixture": true,
+  "provider": "mock-local",
+  "capabilities": ["vision.inspect", "vision.ocr"],
+  "runtime": {"kind": "mock", "version": "1", "weights": "none"},
+  "hardware": {
+    "vram_gb_min": 0,
+    "ram_gb_min": 0,
+    "disk_gb": 0,
+    "label_on_ref_hw": "green",
+    "notes": "Returns fixture perception text; it does not inspect real images."
+  },
+  "license": {
+    "id": "MIT",
+    "commercial_use": true,
+    "source": "local fixture; repository source is the license record",
+    "verified_at": "2026-10-20",
+    "ledger_id": "ledger:phase2:catalog-mock-vision-license"
+  },
+  "quality": {"text_rendering": "not_applicable", "strengths": ["deterministic perception fixtures"]},
+  "fidelity_map": {
+    "sketch": {"supported": true, "max_dimension": 2048},
+    "draft": {"supported": true, "max_dimension": 4096},
+    "final": {"supported": true, "max_dimension": 4096}
+  },
+  "determinism": "seeded",
+  "cost": {"local": true, "amount": 0, "currency": "USD"},
+  "qualification": {
+    "status": "QUALIFIED",
+    "machine_profile": "mock-offline-node24",
+    "verified_at": "2026-10-20",
+    "ledger_id": "ledger:phase2:catalog-mock-vision-qualification",
+    "scope": "mock response contract only; no perception quality claim"
+  },
+  "verified_at": "2026-10-20",
+  "ledger_id": "ledger:phase2:catalog-mock-vision"
+}

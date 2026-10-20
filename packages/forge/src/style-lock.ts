@@ -1,0 +1,6 @@
+import { ForgeRequestSchema, type ForgeRequest, type StyleLockInjection } from "./capabilities.ts";
+import { IMAGE_CAPABILITIES } from "./index-types.ts";
+
+export interface StyleLock { version: string; anchors?: string[]; palette?: string[]; shape_rules?: string[]; negatives?: string[]; prompt_prefixes?: Partial<Record<string, string>>; }
+export function injectStyleLock(request: ForgeRequest, lock: StyleLock): ForgeRequest { const parsed = ForgeRequestSchema.parse(request); if (!IMAGE_CAPABILITIES.includes(parsed.capability)) return parsed; const injection: StyleLockInjection = { version: lock.version, anchors: lock.anchors ?? [], palette: lock.palette ?? [], shape_rules: lock.shape_rules ?? [], negatives: lock.negatives ?? [], prompt_prefix: lock.prompt_prefixes?.[parsed.capability] }; const prompt = [injection.prompt_prefix, parsed.prompt].filter(Boolean).join("\n"); return ForgeRequestSchema.parse({ ...parsed, prompt: prompt || undefined, negative: [parsed.negative, ...injection.negatives].filter(Boolean).join(", ") || undefined, style_lock: injection }); }
+export function provenanceStyleLock(lock: StyleLock): { style_lock: { version: string } } { return { style_lock: { version: lock.version } }; }

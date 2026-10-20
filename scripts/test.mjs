@@ -15,6 +15,7 @@ const checks = [
   ["pin-check", "scripts/pin-check.mjs"],
   ["db-spike", "scripts/db-spike.mjs"],
   ["config-lint", "scripts/config-lint.mjs"],
+  ["catalog-lint", "scripts/catalog-lint.mjs"],
   ["gui-smoke", "scripts/gui-smoke.mjs"],
 ];
 
@@ -88,6 +89,7 @@ failures += await run(
   "tests/electron-footprint.test.mjs",
   "tests/install-tools.test.mjs",
   "tests/ffmpeg-smoke.test.mjs",
+  "tests/forge-consult-demo.test.mjs",
 );
 
 if (failures > 0) {
